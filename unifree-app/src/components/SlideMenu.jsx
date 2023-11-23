@@ -1,11 +1,20 @@
-import { Link } from "react-router-dom";
-const SlideMenu = ({ title }, { list }) => {
-  return (
-    <div>
-        <div><p>{}</p></div>
+/* eslint-disable react/prop-types */
 
-    </div>
-    )
+import FormationCard from "./FormationCard";
+
+const SlideMenu = ({ title }, { list }) => {
+  const listFormation = list.map((formation, index) => (
+    <FormationCard key={index} formation={formation} />
+  ));
+
+  return (
+    <>
+      <div>
+        <p>{title}</p>
+      </div>
+      <div>{listFormation}</div>
+    </>
+  );
 };
 
 export default SlideMenu;
