@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const FormationCard = ({ formation }) => {
   return (
     <div className="h-full shrink-0 border rounded-[18px] border-solid border-[#C7C7C7]">
-      <Link className="flex flex-col items-center" to={`./${formation.id}`}>
+      <Link className="flex flex-col items-center" to={`/${formation.id}`}>
         <img className="w-[238.433px] h-[126px] shrink-0 rounded-[14px] mt-6" src={formation.cover}/>
         <div>
         <p className="w-[220.874px] text-black text-base not-italic font-medium leading-[normal]">{formation.title}</p>

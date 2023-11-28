@@ -3,6 +3,7 @@ import Connect from "./pages/Connect";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Formation from "./pages/Formation";
+import SignUp from "./pages/SignUP";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Connect />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/:id" element={<Formation />} />
       <Route path="search/:search" element={<Search />} />
       </Routes>

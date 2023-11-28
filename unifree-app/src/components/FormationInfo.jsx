@@ -11,7 +11,7 @@ const FormationInfo = ({ formation }) => {
         <img className="w-[238.433px] h-[126px] shrink-0 rounded-[14px] mt-6" src={formation.cover}/>
         <div>
         <p className="w-[220.874px] text-black text-base not-italic font-medium leading-[normal]">{formation.title}</p>
-        <p className="w-[88px] text-white bg-cyan-300 rounded text-sm px-2 not-italic font-medium leading-[normal]">{formation.categorie}</p>
+        <p className="inline-block text-white bg-cyan-300 rounded text-sm px-2 not-italic font-medium leading-[normal]">{formation.categorie}</p>
         <div className="flex w-1/2">
             <p className="w-[110px] text-[#949494] text-[13px] not-italic font-normal leading-[normal]">{formation.lesson.length} leçons</p>
             <p className="w-[110px] text-[#949494] text-[13px] not-italic font-normal leading-[normal]">{formation.quizz.length} quizz</p>
