@@ -1,6 +1,6 @@
 import logo from "../assets/whitelogo.png";
 import { Link } from "react-router-dom";
-const Connect = () => {
+const Login = () => {
   return (
     <div className="w-screen h-screen flex flex-row ">
       <div className="basis-1/2 flex flex-col items-center justify-center">
@@ -8,16 +8,12 @@ const Connect = () => {
           <Link className="font-semibold text-main-purple border-b-2 px-5 py-1 border-b-main-purple">
             Se connecter
           </Link>
-          <Link className="font-semibold text-secondary-grey border-b-2 px-5 py-1 border-b-secondary-grey">
+          <Link className="font-semibold text-secondary-grey border-b-2 px-5 py-1 border-b-secondary-grey" to="/signup">
             S&apos;inscrire
           </Link>
         </div>
         <form className="mt-7 flex flex-col gap-2">
-          <input
-            type="text"
-            className="bg-transparent px-3 py-2 border-b border-b-secondary-grey focus:outline-none focus:border-b-slate-500"
-            placeholder="Pseudo"
-          />
+          
           <input
             type="email"
             className="bg-transparent px-3 py-2 border-b border-b-secondary-grey focus:outline-none focus:border-b-slate-500"
@@ -43,4 +39,4 @@ const Connect = () => {
   );
 };
 
-export default Connect;
+export default Login;
