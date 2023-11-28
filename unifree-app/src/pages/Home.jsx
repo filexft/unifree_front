@@ -7,10 +7,12 @@ const Home = () => {
   const firstlist = getFormations();
   console.log(firstlist);
   return (
-    <div className="w-screen h-screen flex flex-col ">
+    <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div>
-      <SlideMenu title={"Formation intéressantes"} list={ firstlist }></SlideMenu>
+      <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
+      <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
+      <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>
       </div>
     </div>
   );

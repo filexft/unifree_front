@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Connect from "./pages/Connect";
 import Home from "./pages/Home";
+import Formation from "./pages/Formation";
 
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Connect />} />
-        
+      <Route path="/:id" element={<Formation />} />
       </Routes>
     </BrowserRouter>
       

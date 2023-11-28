@@ -4,12 +4,22 @@ function Formations() {
   const Formation1 = Formation({
     title: "Formation Test",
     categorie: "Catestgorie",
-    lesson: ["toto", "tata", "tati", "toma"],
-    quizz:["toto", "tata"],
+    lesson: [{title: "toto le goat", link: "totoFr"}, {title: "tata le goat", link: "tataFr"}, {title: "tati le goat", link: "tatiFr"}, {title: "toma le goat", link: "tomaFr"}],
+    quizz:[{title:"toto", link: "totoquizz"}, {title:"tata", link: "tataquizz"}],
     likeCount: 12,
-    cover: "https://images.squarespace-cdn.com/content/v1/54fc8146e4b02a22841f4df7/1566824447866-P0M8PSGYRQ46NYBCDSON/Art+of+Pinocchio+F+-+32.jpeg",
+    cover: "https://www.pole-emploi.fr/files/live/sites/corse/files/corse/Formation/formations-dispo-850x523.jpg",
   });
-  const FormationList = [Formation1];
+
+  const Formation2 = Formation({
+    title: "FormationTest2",
+    categorie: "Informatique",
+    lesson: [{title: "toto le goat", link: "totoFr"}, {title: "tata le goat", link: "tataFr"}, {title: "tati le goat", link: "tatiFr"}, {title: "toma le goat", link: "tomaFr"}],
+    quizz:[{title:"toto", link: "totoquizz"}, {title:"tata", link: "tataquizz"}],
+    likeCount: 12,
+    cover: "https://www.batisafe.fr/wp-content/uploads/2020/04/POST_FORMATION-EN-LIGNE.jpg",
+  });
+
+  const FormationList = [Formation1,Formation2,Formation2,Formation2,Formation2,Formation2, Formation2];
 
   return FormationList;
 }
