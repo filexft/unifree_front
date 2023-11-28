@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import SlideMenu from "../components/SlideMenu";
+import SearchList from "../components/SearchList";
 import getFormations from "../controllers/Formations";
 
 
@@ -9,9 +9,7 @@ const Home = () => {
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div>
-      <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
-      <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
-      <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>
+      <SearchList title={"De la catégorie informatique"} list={ firstlist }></SearchList>
       </div>
     </div>
   );

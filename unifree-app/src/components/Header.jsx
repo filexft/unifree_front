@@ -1,17 +1,25 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search/${search}`);
+  };
+  
   return (
     <header className="flex h-20 items-center justify-between px-4 py-3 bg-white shadow-md w-full">
       <Link to={"/"} className="flex items-center">
         <img src="/logoname.png" alt="Logo" className="w-20 mr-2" />
       </Link>
-      <form onSubmit={"addFunction"}>
+      <form onSubmit={handleSearchSubmit}>
         <input
           type="text"
           placeholder="Chercher un cours..."
-          value={"addFunction"}
-          onChange={"addFunction"}
+          value={ search }
+          onChange={ (e) => setSearch(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
         />
         <button
