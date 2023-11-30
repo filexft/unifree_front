@@ -1,15 +1,19 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ProgramList = ({ formation }) => {
-  console.log(formation);
-  const lessonList = formation["lesson"].map((link) => (
+  const formationLink = useParams();
+  // Si on est dans la page de la formation, on met le lien vers la leçon en cours en relatif sinon on met le lien en absolu
+  const linkPrefix =
+    formationLink.id === formation.id ? "./" : `/${formation.id}/`;
+
+  const lessonList = formation["lesson"].map((lesson) => (
     <Link
       className="p-3 w-full hover:bg-gray-200"
-      key={link.title}
-      to={`./${link.link}`}
+      key={lesson.title}
+      to={`${linkPrefix}${lesson.title.toLowerCase().replace(/\s+/g, "")}`}
     >
-      {link.title}
+      {lesson.title}
     </Link>
   ));
   const quizzList = formation["quizz"].map((link) => (
