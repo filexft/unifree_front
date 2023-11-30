@@ -16,7 +16,10 @@ const ProgramList = ({ formation }) => {
       {lesson.title}
     </Link>
   ));
-  const quizzList = formation["quizz"].map((link) => (
+
+  const quizzList = formation.lesson.filter((lesson) => lesson.isQuizz === true);
+
+  const quizz = quizzList.map((link) => (
     <Link
       className="p-3 w-full hover:bg-gray-200"
       key={link.title}
@@ -28,7 +31,7 @@ const ProgramList = ({ formation }) => {
   return (
     <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between m-4">
       {lessonList}
-      {quizzList}
+      {quizz}
     </div>
   );
 };
