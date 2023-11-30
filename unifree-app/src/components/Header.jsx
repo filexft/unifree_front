@@ -8,7 +8,30 @@ const Header = () => {
     e.preventDefault();
     navigate(`/search/${search}`);
   };
-  
+  const isConnect = true;
+
+  const userId = "jojo69";
+
+  const connectButton = (
+    <Link
+      to={"/login"}
+      className="flex items-center px-6 py-2 border-2 border-main-purple font-semibold text-main-purple rounded hover:bg-main-purple hover:text-white duration-300"
+    >
+      S&apos;inscrire/Se connecter
+    </Link>
+  );
+
+  const profileButton = (
+    <Link
+      to={"/u/" + userId}
+      className="flex items-center px-6 py-2 border-2 border-main-purple font-semibold text-main-purple rounded hover:bg-main-purple hover:text-white duration-300"
+    >
+      My Profile
+    </Link>
+  );
+
+  const rightButton = isConnect === true ? profileButton : connectButton;
+
   return (
     <header className="flex h-20 items-center justify-between px-4 py-3 bg-white shadow-md w-full">
       <Link to={"/"} className="flex items-center">
@@ -18,8 +41,8 @@ const Header = () => {
         <input
           type="text"
           placeholder="Chercher un cours..."
-          value={ search }
-          onChange={ (e) => setSearch(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
         />
         <button
@@ -29,12 +52,7 @@ const Header = () => {
           Search
         </button>
       </form>
-      <Link
-        to={"/login"}
-        className="flex items-center px-6 py-2 border-2 border-main-purple font-semibold text-main-purple rounded hover:bg-main-purple hover:text-white duration-300"
-      >
-        S&apos;inscrire/Se connecter
-      </Link>
+      {rightButton}
     </header>
   );
 };
