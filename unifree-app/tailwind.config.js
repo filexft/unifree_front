@@ -6,7 +6,7 @@ export default {
       colors: {
         'main-purple': '#9D2CF6',
         'secondary-grey': '#ccc',
-      },
+      }
     },
   },
   plugins: [],

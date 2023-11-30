@@ -1,10 +1,20 @@
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import ProgramList from "../components/FormationComponents/ProgramList";
 import getFormations from "../controllers/Formations";
-import { Link, useParams } from "react-router-dom";
+import Quizz from "../components/Quizz";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const nextQuestion = () => {
+    if (currentQuestionIndex < lesson.content.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
@@ -17,8 +27,22 @@ const Lesson = () => {
   const lesson = lessons.filter(
     (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
   )[0];
+
+  var content = "Rien à afficher";
+  const currentQuestion = lesson.content.questions[currentQuestionIndex];
+
+  if (lesson.isQuizz) {
+    content = (
+      <Quizz
+        title={currentQuestion.title}
+        responses={currentQuestion.answers}
+        onNext={nextQuestion}
+      />
+    );
+  } else content = lesson.content;
+
   return (
-    <div className="w-screen h-screen flex flex-col ">
+    <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div className="flex flex-col md:flex-row w-screen">
         <div className="md:w-1/3 md:mt-8">
@@ -36,9 +60,7 @@ const Lesson = () => {
               className="w-[243px] h-[167px] mt-10 mb-10"
               src="/lessonImage.png"
             ></img>
-            <div className="font-normal p-10 text-xl whitespace-pre-line">
-              {lesson.content}
-            </div>
+            <div className="p-10 whitespace-pre-line">{content}</div>
           </div>
         </div>
       </div>

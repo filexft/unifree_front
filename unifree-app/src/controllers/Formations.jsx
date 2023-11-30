@@ -30,11 +30,11 @@ function Formations() {
           questions: [
             {
               title: "Qui est le goat ?",
-              answer: [
-                { title: "CR7", isCorrect: "true" },
-                { title: "Messi", isCorrect: "false" },
-                { title: "Neymar", isCorrect: "false" },
-                { title: "Mbappé", isCorrect: "false" },
+              answers: [
+                { title: "CR7", isCorrect: true },
+                { title: "Messi", isCorrect: false },
+                { title: "Neymar", isCorrect: false },
+                { title: "Mbappé", isCorrect: false },
               ],
             },
             {
