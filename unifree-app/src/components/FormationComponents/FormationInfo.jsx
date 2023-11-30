@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import LikeImage from "../assets/thumb_up.png";
+import LikeImage from "../../assets/thumb_up.png";
 
 import { Link } from 'react-router-dom';
 

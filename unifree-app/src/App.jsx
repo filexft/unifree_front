@@ -15,7 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/:id" element={<Formation />} />
         <Route path="search/:search" element={<Search />} />
-        <Route path="u/:userId" element={<UserPage />} />
+        <Route path="/u/:id" element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   );

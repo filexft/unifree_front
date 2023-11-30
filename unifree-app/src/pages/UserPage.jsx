@@ -9,10 +9,10 @@ import getFormations from "../controllers/Formations";
 
 const UserPage = () => {
   const { id } = useParams();
+  console.log(id);
   const formationList = getFormations();
   const userList = getUsers();
-  const user = userList.filter((user) => user.id === id)[0];
-  console.log(user.type);
+  const user = userList.filter((user) => user.userId === id)[0];
   
   const etudiantView = (
     <>

@@ -1,4 +1,4 @@
-function User({ username, email, password, type, icon, formationFollowed, likedFormation }) {
+function User({ username, email, password, type, icon, followedFormation = [], likedFormation = [], createdFormation = []}) {
     const userId = username.toLowerCase().replace(/\s+/g, '');
 
     return {
@@ -8,8 +8,9 @@ function User({ username, email, password, type, icon, formationFollowed, likedF
         type,
         icon,
         password,
-        formationFollowed,
-        likedFormation
+        followedFormation,
+        likedFormation,
+        createdFormation
     };
 }
 
