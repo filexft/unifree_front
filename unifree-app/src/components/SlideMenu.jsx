@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import FormationCard from "./FormationCard";
+import FormationCard from "./FormationComponents/FormationCard";
 
 const SlideMenu = ({ title, list }) => {
   const listFormation = list.map((formation) => (

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import FormationCard from "./FormationCard";
+import FormationCard from "./FormationComponents/FormationCard";
 import { useParams } from "react-router-dom";
 
 const SearchList = ({ list }) => {
