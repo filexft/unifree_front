@@ -1,11 +1,10 @@
+import { useParams, Link } from "react-router-dom";
+import NotFound from "./NotFound";
+
 import Header from "../components/Header";
-
-import { useParams } from "react-router-dom";
-
-import getUsers from "../controllers/Users";
 import SlideMenu from "../components/SlideMenu";
 import getFormations from "../controllers/Formations";
-
+import getUsers from "../controllers/Users";
 
 const UserPage = () => {
   const { id } = useParams();
@@ -13,7 +12,9 @@ const UserPage = () => {
   const formationList = getFormations();
   const userList = getUsers();
   const user = userList.filter((user) => user.userId === id)[0];
-  
+  if (!user) {
+    return <NotFound />;
+  }
   const etudiantView = (
     <>
       <SlideMenu title={"Formations suivies"} list={formationList}></SlideMenu>
@@ -22,6 +23,7 @@ const UserPage = () => {
   );
   const professeurView = (
     <>
+      <Link to="/formationedit">Ajouter une formation</Link>
       <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu>
       <SlideMenu
         title={"Formations en cours de création"}
@@ -49,7 +51,7 @@ const UserPage = () => {
           </button>
         </div>
       </div>
-      { View }
+      {View}
     </div>
   );
 };

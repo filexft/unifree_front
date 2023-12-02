@@ -16,11 +16,11 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/:id" element={<Formation />} />
         <Route path="search/:search" element={<Search />} />
         <Route path="/u/:id" element={<UserPage />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/:formationName/:lessonName" element={<Lesson />} />
+        <Route path="/:id" element={<Formation />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
