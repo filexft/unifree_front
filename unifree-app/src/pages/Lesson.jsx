@@ -4,9 +4,11 @@ import Header from "../components/Header";
 import ProgramList from "../components/FormationComponents/ProgramList";
 import getFormations from "../controllers/Formations";
 import Quizz from "../components/Quizz";
+import NotFound from "./NotFound";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
+  
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -17,10 +19,18 @@ const Lesson = () => {
     (formation) => formation.id === formationName
   );
 
+  if (!formation[0]) {
+    return <NotFound/>;
+  }
+
   const lessons = formation[0].lesson;
   const lesson = lessons.filter(
     (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
   )[0];
+
+    if (!lesson) {
+    return <NotFound/>;
+  }
 
   var content = "Rien à afficher";
 

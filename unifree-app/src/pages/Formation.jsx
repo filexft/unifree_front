@@ -3,11 +3,15 @@ import FormationInfo from "../components/FormationComponents/FormationInfo";
 import ProgramList from "../components/FormationComponents/ProgramList";
 import getFormations from "../controllers/Formations";
 import { useParams } from "react-router-dom";
+import NotFound from "./NotFound";
 
 const Formation = () => {
   const { id } = useParams();
   const firstList = getFormations();
   const formation = firstList.filter((formation) => formation.id === id);
+  if (!formation[0]) {
+    return <NotFound />;
+  }
   return (
     <div className="w-screen h-screen flex flex-col ">
       <Header />
