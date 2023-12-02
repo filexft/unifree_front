@@ -23,7 +23,7 @@ const UserPage = () => {
   );
   const professeurView = (
     <>
-      <Link to="/formationedit">Ajouter une formation</Link>
+      <Link to="/edit-formation">Ajouter une formation</Link>
       <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu>
       <SlideMenu
         title={"Formations en cours de création"}

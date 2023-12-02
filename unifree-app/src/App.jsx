@@ -7,6 +7,7 @@ import Formation from "./pages/Formation";
 import SignUp from "./pages/SignUP";
 import NotFound from "./pages/NotFound";
 import Lesson from "./pages/Lesson";
+import EditFormation from "./pages/EditFormation";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/edit-formation" element={<EditFormation />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="search/:search" element={<Search />} />
         <Route path="/u/:id" element={<UserPage />} />
