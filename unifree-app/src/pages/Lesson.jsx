@@ -8,13 +8,7 @@ import Quizz from "../components/Quizz";
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  const nextQuestion = () => {
-    if (currentQuestionIndex < lesson.content.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
@@ -29,15 +23,34 @@ const Lesson = () => {
   )[0];
 
   var content = "Rien à afficher";
-  const currentQuestion = lesson.content.questions[currentQuestionIndex];
 
   if (lesson.isQuizz) {
+    const currentQuestion = lesson.content.questions[currentIndex];
+    const nbQuestion = lesson.content.questions.length - 2;
+
+    var suivantBtn = "";
+    if (currentIndex <= nbQuestion) {
+      suivantBtn = (
+        <button
+          className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
+          onClick={() => {
+            setCurrentIndex(currentIndex + 1);
+            const submitButton = document.getElementById("Submit");
+            submitButton.classList.remove("hidden");
+          }}
+        >
+          Suivant
+        </button>
+      );
+    }
     content = (
-      <Quizz
-        title={currentQuestion.title}
-        responses={currentQuestion.answers}
-        onNext={nextQuestion}
-      />
+      <>
+        <Quizz
+          title={currentQuestion.title}
+          responses={currentQuestion.answers}
+        />
+        {suivantBtn}
+      </>
     );
   } else content = lesson.content;
 

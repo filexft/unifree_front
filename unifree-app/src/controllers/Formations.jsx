@@ -39,11 +39,20 @@ function Formations() {
             },
             {
               title: "Quel est le meilleur club ?",
-              answer: [
-                { title: "Real Madrid", isCorrect: "true" },
-                { title: "Barça", isCorrect: "false" },
-                { title: "FC Sochaux", isCorrect: "false" },
-                { title: "OL", isCorrect: "false" },
+              answers: [
+                { title: "Barça", isCorrect: false },
+                { title: "FC Sochaux", isCorrect: false },
+                { title: "Real Madrid", isCorrect: true },
+                { title: "OL", isCorrect: false },
+              ],
+            },
+            {
+              title: "Qui est le flop ?",
+              answers: [
+                { title: "CR7", isCorrect: false },
+                { title: "Messi", isCorrect: false },
+                { title: "Neymar", isCorrect: false },
+                { title: "Mbappé", isCorrect: true },
               ],
             },
           ],
