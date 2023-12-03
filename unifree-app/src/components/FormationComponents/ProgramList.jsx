@@ -7,11 +7,19 @@ const ProgramList = ({ formation }) => {
   const linkPrefix =
     formationLink.id === formation.id ? "./" : `/${formation.id}/`;
 
+  // On refresh la page pour que le quizz se relance
+  function refreshPage() {
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 500);
+  }
+
   const lessonList = formation["lesson"].map((lesson) => (
     <Link
       className="p-3 w-full hover:bg-gray-200"
       key={lesson.title}
       to={`${linkPrefix}${lesson.title.toLowerCase().replace(/\s+/g, "")}`}
+      onClick={refreshPage}
     >
       <img
         src={lesson.isQuizz ? "/quizzIcon.png" : "/lessonIcon.png"}
