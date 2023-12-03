@@ -12,7 +12,7 @@ const SlideMenu = ({ title, list }) => {
       <div className="w-full">
         <p className="font-medium text-xl p-5">{title}</p>
       </div>
-      <div className="m-3 flex flex-row gap-3 overflow-x-scroll no-scrollbar">
+      <div className="p-3 mr-0 flex flex-row gap-3 overflow-x-scroll no-scrollbar">
           {listFormation}
       </div>
     </div>

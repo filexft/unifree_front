@@ -36,8 +36,9 @@ const UserPage = () => {
 
   const View = <>{user.type === "Étudiant" ? etudiantView : professeurView}</>;
   return (
-    <div className="w-screen h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col">
       <Header />
+      <div className="p-5">
       <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
         <img
           className="w-44 h-44 object-cover rounded-full"
@@ -53,6 +54,8 @@ const UserPage = () => {
           </button>
         </div>
       </div>
+      
+    </div>
       {View}
     </div>
   );

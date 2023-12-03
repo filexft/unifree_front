@@ -13,11 +13,13 @@ const Formation = () => {
     return <NotFound />;
   }
   return (
-    <div className="w-screen h-screen flex flex-col ">
+    <div className="w-full h-full flex flex-col ">
       <Header />
-      <div className="flex flex-row w-screen">
+      <div className="flex flex-row w-full">
         <FormationInfo formation={formation[0]}></FormationInfo>
+        <div className="w-full p-4">
         <ProgramList formation={formation[0]}></ProgramList>
+        </div>
       </div>
     </div>
   );

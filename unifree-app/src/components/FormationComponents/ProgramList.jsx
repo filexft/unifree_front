@@ -30,7 +30,7 @@ const ProgramList = ({ formation }) => {
   ));
 
   return (
-    <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between m-4">
+    <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between">
       {lessonList}
     </div>
   );
