@@ -8,7 +8,6 @@ import getUsers from "../controllers/Users";
 
 const UserPage = () => {
   const { id } = useParams();
-  console.log(id);
   const formationList = getFormations();
   const userList = getUsers();
   const user = userList.filter((user) => user.userId === id)[0];
@@ -22,14 +21,17 @@ const UserPage = () => {
     </>
   );
   const professeurView = (
-    <>
-      <Link to="/edit-formation">Ajouter une formation</Link>
+    <div className="flex flex-col ">
+      <div className="pl-5 mt-5">
+      <Link
+        to="/edit-formation"
+        className="inline-block px-6 py-2 border-2 border-main-purple font-semibold text-main-purple rounded hover:bg-main-purple hover:text-white duration-300"
+      >
+        Créer une formation
+      </Link>
+      </div>
       <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu>
-      <SlideMenu
-        title={"Formations en cours de création"}
-        list={formationList}
-      ></SlideMenu>
-    </>
+    </div>
   );
 
   const View = <>{user.type === "Étudiant" ? etudiantView : professeurView}</>;

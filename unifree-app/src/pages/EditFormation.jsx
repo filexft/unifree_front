@@ -144,22 +144,27 @@ const EditFormation = () => {
           Créer une formation
         </div>
         <div>
-          <label htmlFor="title">Titre de la formation</label>
+          <label className="mb-4 font-semibold" htmlFor="title">
+            Titre de la formation
+          </label>
           <input
             type="text"
             id="title"
+            placeholder="Écrivez le titre de la leçon..."
             value={title}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
+            className="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <label htmlFor="category">Catégorie</label>
+          <label className="mb-4 font-semibold" htmlFor="category">
+            Catégorie
+          </label>
           <input
             type="text"
             id="category"
             value={category}
             placeholder="Écrivez la catégorie..."
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
+            className="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
             onChange={(e) => setCategory(e.target.value)}
           />
         </div>
@@ -186,88 +191,103 @@ const EditFormation = () => {
                         handleLessonTitleChange(index, e.target.value)
                       }
                     ></input>
-                    {lesson.content.questions.map((question, questionIndex) => (
-                      <div key={questionIndex}>
-                        <label
-                          htmlFor={`questionTitle${index}-${questionIndex}`}
-                        >
-                          Titre de la question
-                        </label>
-                        <input
-                          type="text"
-                          id={`questionTitle${index}-${questionIndex}`}
-                          value={question.title}
-                          placeholder="Écrivez le titre de la question ici..."
-                          className="block p-2.5 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
-                          onChange={(e) =>
-                            handleQuestionTitleChange(
-                              index,
-                              questionIndex,
-                              e.target.value
-                            )
-                          }
-                        />
-                        {question.answers.map((answer, answerIndex) => (
-                          <div key={answerIndex}>
+                    <div className="flex flex-col gap-8">
+                      {lesson.content.questions.map(
+                        (question, questionIndex) => (
+                          <div key={questionIndex}>
                             <label
-                              htmlFor={`answerTitle${index}-${questionIndex}-${answerIndex}`}
+                              htmlFor={`questionTitle${index}-${questionIndex}`}
                             >
-                              Titre de la réponse
+                              Titre de la question
                             </label>
                             <input
                               type="text"
-                              id={`answerTitle${index}-${questionIndex}-${answerIndex}`}
-                              value={answer.title}
-                              placeholder="Écrivez le titre de la réponse ici..."
+                              id={`questionTitle${index}-${questionIndex}`}
+                              value={question.title}
+                              placeholder="Écrivez le titre de la question ici..."
                               className="block p-2.5 mb-6 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
                               onChange={(e) =>
-                                handleAnswerTitleChange(
+                                handleQuestionTitleChange(
                                   index,
                                   questionIndex,
-                                  answerIndex,
                                   e.target.value
                                 )
                               }
                             />
-                            <label
-                              htmlFor={`isCorrect${index}-${questionIndex}-${answerIndex}`}
-                            >
-                              Réponse correcte
-                            </label>
-                            <input
-                              type="checkbox"
-                              id={`isCorrect${index}-${questionIndex}-${answerIndex}`}
-                              checked={answer.isCorrect}
-                              className="ml-2"
-                              onChange={(e) =>
-                                handleAnswerCorrectChange(
-                                  index,
-                                  questionIndex,
-                                  answerIndex,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          </div>
-                        ))}
-                        <button
-                          onClick={() => handleAddAnswer(index, questionIndex)}
-                        >
-                          Ajouter une réponse
-                        </button>
+                            {question.answers.map((answer, answerIndex) => (
+                              <div
+                                key={answerIndex}
+                                className="border p-5 flex justify-evenly items-center gap-5"
+                              >
+                                <label
+                                  htmlFor={`answerTitle${index}-${questionIndex}-${answerIndex}`}
+                                >
+                                  Réponse
+                                </label>
+                                <input
+                                  type="text"
+                                  id={`answerTitle${index}-${questionIndex}-${answerIndex}`}
+                                  value={answer.title}
+                                  placeholder="Écrivez le titre de la réponse ici..."
+                                  className="block p-2.5 w-1/2 text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
+                                  onChange={(e) =>
+                                    handleAnswerTitleChange(
+                                      index,
+                                      questionIndex,
+                                      answerIndex,
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                                <label
+                                  htmlFor={`isCorrect${index}-${questionIndex}-${answerIndex}`}
+                                >
+                                  Réponse correcte
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  id={`isCorrect${index}-${questionIndex}-${answerIndex}`}
+                                  checked={answer.isCorrect}
+                                  className="ml-2"
+                                  onChange={(e) =>
+                                    handleAnswerCorrectChange(
+                                      index,
+                                      questionIndex,
+                                      answerIndex,
+                                      e.target.checked
+                                    )
+                                  }
+                                />
+                              </div>
+                            ))}
+                            <div className="flex items-center justify-between gap-6">
+                              <button
+                                onClick={() =>
+                                  handleAddAnswer(index, questionIndex)
+                                }
+                                className="inline-block px-6 py-2 border-2 text-xs border-purple-600 font-semibold text-purple-600 rounded-[18px] hover:bg-purple-600 hover:text-white duration-300 mt-3"
+                              >
+                                Ajouter une réponse
+                              </button>
 
-                        <button
-                          type="button"
-                          className="flex w-1/2 justify-center items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300 mt-3"
-                          onClick={() =>
-                            handleDeleteQuestion(index, questionIndex)
-                          }
-                        >
-                          Supprimer la question
-                        </button>
-                      </div>
-                    ))}
-                    <button onClick={() => handleAddQuestion(index)}>
+                              <button
+                                type="button"
+                                className="inline-block px-6 py-2 border-2 text-xs border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300 mt-3"
+                                onClick={() =>
+                                  handleDeleteQuestion(index, questionIndex)
+                                }
+                              >
+                                Supprimer la question
+                              </button>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleAddQuestion(index)}
+                      className="inline-block px-6 py-2 text-xs border-2 border-purple-600 font-semibold text-purple-600 rounded-[18px] hover:bg-purple-600 hover:text-white duration-300 mt-3"
+                    >
                       Ajouter une question
                     </button>
                   </div>
@@ -294,6 +314,7 @@ const EditFormation = () => {
                   <textarea
                     id={`content${index}`}
                     value={lesson.content}
+                    rows="6"
                     placeholder="Écrivez le contenu de la leçon ici..."
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-none focus:border-main-purple"
                     onChange={(e) =>
@@ -304,7 +325,7 @@ const EditFormation = () => {
               )}
               <button
                 type="button"
-                className="flex w-1/2 justify-center items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300 mt-3"
+                className="inline-block px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300 mt-3"
                 onClick={() => handleDeleteLesson(index)}
               >
                 Supprimer la leçon
@@ -312,29 +333,31 @@ const EditFormation = () => {
             </div>
           ))}
         </div>
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-row gap-5">
+          <button
+            className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
+            type="button"
+            onClick={handleAddLesson}
+          >
+            Ajouter une leçon
+          </button>
 
-        <button
-          className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
-          type="button"
-          onClick={handleAddLesson}
-        >
-          Ajouter une leçon
-        </button>
-
-        <button
-          className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
-          type="button"
-          onClick={handleAddQuizz}
-        >
-          Ajouter un Quizz
-        </button>
-
-        <button
-          className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
-          type="submit"
-        >
-          Publier la formation
-        </button>
+          <button
+            className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
+            type="button"
+            onClick={handleAddQuizz}
+          >
+            Ajouter un Quizz
+          </button>
+          </div>
+          <button
+            className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
+            type="submit"
+          >
+            Publier la formation
+          </button>
+        </div>
       </form>
     </div>
   );
