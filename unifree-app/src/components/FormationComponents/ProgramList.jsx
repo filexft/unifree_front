@@ -23,8 +23,8 @@ const ProgramList = ({ formation }) => {
     >
       <img
         src={lesson.isQuizz ? "/quizzIcon.png" : "/lessonIcon.png"}
-        className="w-6 h-6 mr-4 inline-block"
-      />
+        className={`w-6 h-6 mr-4 inline-block ${lesson.isRead ? 'grayscale-0' : 'grayscale'}`}
+        />
       {lesson.title}
     </Link>
   ));

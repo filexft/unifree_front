@@ -8,7 +8,6 @@ import NotFound from "./NotFound";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
-  
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -20,7 +19,7 @@ const Lesson = () => {
   );
 
   if (!formation[0]) {
-    return <NotFound/>;
+    return <NotFound />;
   }
 
   const lessons = formation[0].lesson;
@@ -28,11 +27,21 @@ const Lesson = () => {
     (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
   )[0];
 
-    if (!lesson) {
-    return <NotFound/>;
+  if (!lesson) {
+    return <NotFound />;
   }
 
   var content = "Rien à afficher";
+
+  const setRead = () => {
+    const lessonList = formation[0].lesson;
+    console.log(lessonList);
+    const currentLesson = lessonList.filter(
+      (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
+    )[0];
+    console.log(currentLesson);
+    currentLesson.isRead = true;
+  }
 
   if (lesson.isQuizz) {
     const currentQuestion = lesson.content.questions[currentIndex];
@@ -68,7 +77,7 @@ const Lesson = () => {
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div className="flex flex-col md:flex-row w-screen">
-        <div className="md:w-1/3 md:mt-8">
+        <div className="md:w-1/3 md:mt-8 p-4">
           <ProgramList formation={formation[0]}></ProgramList>
         </div>
         <div className="flex flex-col w-full p-6 md:p-12">
@@ -84,6 +93,12 @@ const Lesson = () => {
               src="/lessonImage.png"
             ></img>
             <div className="p-10 whitespace-pre-line">{content}</div>
+            <button
+              onClick={setRead}
+              className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
+            >
+              Lu
+            </button>
           </div>
         </div>
       </div>

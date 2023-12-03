@@ -18,7 +18,7 @@ const Formation = () => {
       <div className="flex flex-row w-full">
         <FormationInfo formation={formation[0]}></FormationInfo>
         <div className="w-full p-4">
-        <ProgramList formation={formation[0]}></ProgramList>
+          <ProgramList formation={formation[0]}></ProgramList>
         </div>
       </div>
     </div>

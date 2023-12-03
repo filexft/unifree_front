@@ -4,7 +4,7 @@ function Formations() {
   const Formation1 = Formation({
     title: "Formation Test",
     categorie: "Catestgorie",
-    lesson: [{ title: "toto le goat" }, { title: "tata le goat" }],
+    lesson: [{ title: "toto le goat"}, { title: "tata le goat" }],
     likeCount: 12,
     cover:
       "https://www.pole-emploi.fr/files/live/sites/corse/files/corse/Formation/formations-dispo-850x523.jpg",
