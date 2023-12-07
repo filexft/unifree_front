@@ -4,7 +4,7 @@ import getFormations from "../controllers/Formations";
 
 
 const Home = () => {
-  const firstlist = getFormations();
+  const firstlist = getFormations(); // On remplace par un hoot 
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
