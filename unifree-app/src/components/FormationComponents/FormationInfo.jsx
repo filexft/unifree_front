@@ -7,11 +7,12 @@ const FormationInfo = ({ formation }) => {
     (lesson) => lesson.isQuizz === true
   );
 
+  // remplacer par le nom de l'utilisateur courant
   const user = "User";
 
-  const commentsList = formation.comments.map((comment) => (
-    <div key={comment.author} className="border ">
-      <div>{comment.author}</div>
+  var commentsList = formation.comments.map((comment) => (
+    <div key={comment.author} className="border rounded-xl p-3 mb-2">
+      <div className="text-xs font-semibold ">{comment.author}</div>
       <div>{comment.content}</div>
     </div>
   ));
@@ -26,6 +27,30 @@ const FormationInfo = ({ formation }) => {
       likeBtn.src = "/thumb_up.png";
       formation.likeCount--;
     }
+  }
+
+  function addComment() {
+    const comment = document.getElementById("comment");
+    comment.classList.toggle("hidden");
+  }
+
+  function sendComment() {
+    const comment = document.getElementById("comment");
+    comment.classList.toggle("hidden");
+    const content = document.getElementById("content");
+    const newComment = {  author: user, content: content.value };
+    content.value = "";
+    formation.comments.push(newComment);
+    refreshComments();
+  }
+
+  function refreshComments() {
+    commentsList = formation.comments.map((comment) => (
+      <div key={comment.author} className="border rounded-xl p-3 mb-2">
+        <div className="text-xs font-semibold ">{comment.author}</div>
+        <div>{comment.content}</div>
+      </div> 
+    ))
   }
 
   return (
@@ -68,8 +93,12 @@ const FormationInfo = ({ formation }) => {
           </div>
         </div>
       </div>
-      <div>
-        <p>Commentaires</p>
+      <div className="w-full p-6">
+        <div className="font-medium text-xl mb-4 flex justify-between items-center"><p>Commentaires</p><button onClick={addComment} className=" py-2 text-sm text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300 ">Commenter</button> </div>
+        <div id="comment" className="hidden mb-6">
+          <textarea id="content" className="w-full border rounded-xl p-3 mb-2" placeholder="Ajouter un commentaire..."></textarea>
+          <button onClick={ sendComment} className=" py-2 text-sm text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300 ">Envoyer</button>
+        </div>
         { commentsList }
       </div>
     </div>
