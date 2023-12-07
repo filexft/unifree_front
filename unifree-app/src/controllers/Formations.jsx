@@ -13,6 +13,11 @@ function Formations() {
   const Formation2 = Formation({
     title: "FormationTest2",
     categorie: "Informatique",
+    author: "Aude Joubert",
+    comments: [
+      { author: "Mamy", content: "C'est super" },
+      { author: "Papy", content: "C'est trop nul" },
+    ],
     lesson: [
       {
         title: "toto le goat",
