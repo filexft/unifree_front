@@ -7,6 +7,15 @@ const FormationInfo = ({ formation }) => {
     (lesson) => lesson.isQuizz === true
   );
 
+  const user = "User";
+
+  const commentsList = formation.comments.map((comment) => (
+    <div key={comment.author} className="border ">
+      <div>{comment.author}</div>
+      <div>{comment.content}</div>
+    </div>
+  ));
+
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
   function toggleLike() {
     const likeBtn = document.getElementById("likeBtn");
@@ -45,19 +54,23 @@ const FormationInfo = ({ formation }) => {
             Écrit par <b>{formation.author}</b>
           </p>
           <div className="flex flex-row">
-          <p className=" text-[#949494] text-base not-italic font-medium leading-[normal]">
-            {formation.likeCount} likes
-          </p>
-          <button>
-            <img
-              id="likeBtn"
-              onClick={toggleLike}
-              className="w-6 h-6 ml-2 shrink-0"
-              src={LikeImage}
-            />
-          </button>
+            <p className=" text-[#949494] text-base not-italic font-medium leading-[normal]">
+              {formation.likeCount} likes
+            </p>
+            <button>
+              <img
+                id="likeBtn"
+                onClick={toggleLike}
+                className="w-6 h-6 ml-2 shrink-0"
+                src={LikeImage}
+              />
+            </button>
+          </div>
         </div>
-        </div>
+      </div>
+      <div>
+        <p>Commentaires</p>
+        { commentsList }
       </div>
     </div>
   );
