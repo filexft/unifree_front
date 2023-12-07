@@ -1,11 +1,23 @@
 /* eslint-disable react/prop-types */
 
-import LikeImage from "../../assets/thumb_up.png";
+import LikeImage from "/thumb_up.png";
 
 const FormationInfo = ({ formation }) => {
   const quizzList = formation.lesson.filter(
     (lesson) => lesson.isQuizz === true
   );
+
+  // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
+  function toggleLike() {
+    const likeBtn = document.getElementById("likeBtn");
+    if (likeBtn.src.includes("thumb_up.png")) {
+      likeBtn.src = "/thumb_up_filled.png";
+      formation.likeCount++;
+    } else {
+      likeBtn.src = "/thumb_up.png";
+      formation.likeCount--;
+    }
+  }
 
   return (
     <div className="w-1/2 flex flex-col items-center shrink-0 rounded-[18px] border-solid">
@@ -39,6 +51,7 @@ const FormationInfo = ({ formation }) => {
           <button>
             <img
               id="likeBtn"
+              onClick={toggleLike}
               className="w-6 h-6 ml-2 shrink-0"
               src={LikeImage}
             />
