@@ -13,6 +13,7 @@ function Formations() {
   const Formation2 = Formation({
     title: "FormationTest2",
     categorie: "Informatique",
+    author: "Aude Joubert",
     lesson: [
       {
         title: "toto le goat",
