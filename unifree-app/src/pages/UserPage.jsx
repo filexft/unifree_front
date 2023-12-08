@@ -3,12 +3,12 @@ import NotFound from "./NotFound";
 
 import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
-import getFormations from "../controllers/Formations";
+import useFormations from "../controllers/useFormations";
 import getUsers from "../controllers/Users";
 
 const UserPage = () => {
   const { id } = useParams();
-  const formationList = getFormations();
+  const formationList = useFormations();
   const userList = getUsers();
   const user = userList.filter((user) => user.userId === id)[0];
   if (!user) {

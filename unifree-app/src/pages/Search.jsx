@@ -1,10 +1,10 @@
 import Header from "../components/Header";
 import SearchList from "../components/SearchList";
-import getFormations from "../controllers/Formations";
+import useFormations from "../controllers/useFormations";
 
 
 const Home = () => {
-  const firstlist = getFormations();
+  const firstlist = useFormations();
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />

@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import FormationInfo from "../components/FormationComponents/FormationInfo";
 import ProgramList from "../components/FormationComponents/ProgramList";
-import getFormations from "../controllers/Formations";
+import useFormations from "../controllers/useFormations";
 import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 

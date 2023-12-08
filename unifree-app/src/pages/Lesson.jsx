@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import ProgramList from "../components/FormationComponents/ProgramList";
-import getFormations from "../controllers/Formations";
+import useFormations from "../controllers/useFormations";
 import Quizz from "../components/Quizz";
 import NotFound from "./NotFound";
 
@@ -13,7 +13,7 @@ const Lesson = () => {
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
-  const firstList = getFormations();
+  const firstList = useFormations();
   const formation = firstList.filter(
     (formation) => formation.id === formationName
   );

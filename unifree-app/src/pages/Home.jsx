@@ -1,10 +1,11 @@
 import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
-import getFormations from "../controllers/Formations";
+import useFormations from "../controllers/useFormations";
+import BackRoutes from "../RoutesInterface";
 
 
 const Home = () => {
-  const firstlist = getFormations(); // On remplace par un hoot 
+  const firstlist = useFormations();// On remplace par un hoot
   return (
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />

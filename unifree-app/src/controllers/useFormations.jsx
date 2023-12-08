@@ -1,6 +1,8 @@
 import Formation from "../models/Formation";
+import BackRoutes from "../RoutesInterface";
 
-function Formations() {
+const useFormations = () => {
+  
   const Formation1 = Formation({
     title: "Formation Test",
     categorie: "Catestgorie",
@@ -116,4 +118,4 @@ function Formations() {
   return FormationList;
 }
 
-export default Formations;
+export default useFormations;
