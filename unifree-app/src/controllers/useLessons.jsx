@@ -21,6 +21,8 @@ const useLessons = (id) => {
 
         res.data.forEach((el) => {
           const tmpLesson = {
+            id : el.Id,
+            isQuizz : false,
             title: el.Titre,
             content: el.Description,
           };

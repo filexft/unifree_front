@@ -16,7 +16,7 @@ const Home = () => {
       <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
       <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>
       </div>
-    </div>
+    </div>  
     : <h1>FirstList : {JSON.stringify(firstlist)}</h1>}
     
     </div>

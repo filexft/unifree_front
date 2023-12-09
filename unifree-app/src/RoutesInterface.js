@@ -10,7 +10,7 @@ const BackRoutes = {
     Qestions : Url+"/Questions/",
     Responses : Url+"/Reponse/",
 
-    SpecificUser : Url+"/Url/",
+    SpecificUser : Url+"/Users/",
     AllUsers : Url+"/Users/All",
     Login : Url+"/login",
     Signup : Url+"/signup",

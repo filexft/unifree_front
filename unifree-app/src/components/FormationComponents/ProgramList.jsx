@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link, useParams } from "react-router-dom";
+import useLessons from "../../controllers/useLessons";
+import useQuizzs from "../../controllers/useQuizzs";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
@@ -12,9 +14,13 @@ const ProgramList = ({ formation }) => {
     setTimeout(() => {
       window.location.reload(false);
     }, 500);
-  }
+  };
+  let LessonsQuizz;
 
-  const lessonList = formation["lesson"].map((lesson) => (
+  const Lessons = useLessons(formation.id);
+  const Quizzs = useQuizzs(formation.id);
+  
+  const lessonList = Lessons.map((lesson) => (
     <Link
       className="p-3 w-full hover:bg-gray-200"
       key={lesson.title}

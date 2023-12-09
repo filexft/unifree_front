@@ -9,6 +9,7 @@ const useQuizzs = (id) => {
   useEffect(() => {
     fetch(BackRoutes.GetFormationQuizzs(id))
       .then(async (res) => {
+        console.log(BackRoutes.GetFormationComments(id))
         const tmp = await res.json();
         return tmp;
       })
@@ -22,6 +23,7 @@ const useQuizzs = (id) => {
         res.data.forEach((el) => {
           const tmpQuizz = {
             id : el.Id,
+            isQuizz : true,
             title: el.Titre,
             content: el.Description,
           };
