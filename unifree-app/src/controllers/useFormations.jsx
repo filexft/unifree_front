@@ -1,12 +1,46 @@
+import { useEffect, useState } from "react";
 import Formation from "../models/Formation";
 import BackRoutes from "../RoutesInterface";
 
 const useFormations = () => {
-  
+  const [Formations, setFormations] = useState({
+    loading: true,
+  });
+
+
+
+  useEffect(() => {
+    // Premier Fetch
+    fetch(BackRoutes.Formations)
+      .then(async (res) => {
+        const tmp = await res.json();
+        return tmp;
+      })
+      .then((res) => {
+        let FormationsList = [];
+
+        if (res.Statut == 0) {
+          throw new Error(res.Message);
+        }
+
+        res.data.forEach((el) => {
+          let tmpFormation = {
+            id: el.Id,
+            title: el.Titre
+          };
+          FormationsList.push(tmpFormation);
+        });
+        return FormationsList;
+      })
+      .then(res => setFormations(res))
+      .catch((err) => setFormations({ error: true, ErrorContent: err }));
+  }, []);
+  return Formations;
+
   const Formation1 = Formation({
     title: "Formation Test",
     categorie: "Catestgorie",
-    lesson: [{ title: "toto le goat"}, { title: "tata le goat" }],
+    lesson: [{ title: "toto le goat" }, { title: "tata le goat" }],
     likeCount: 12,
     cover:
       "https://www.pole-emploi.fr/files/live/sites/corse/files/corse/Formation/formations-dispo-850x523.jpg",
@@ -116,6 +150,6 @@ const useFormations = () => {
   ];
 
   return FormationList;
-}
+};
 
 export default useFormations;

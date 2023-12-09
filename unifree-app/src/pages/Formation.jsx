@@ -7,7 +7,7 @@ import NotFound from "./NotFound";
 
 const Formation = () => {
   const { id } = useParams();
-  const firstList = getFormations();
+  const firstList = useFormations();
   const formation = firstList.filter((formation) => formation.id === id);
   if (!formation[0]) {
     return <NotFound />;

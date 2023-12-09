@@ -32,6 +32,9 @@ const BackRoutes = {
     GetFormationQuizzs : (id) => {
         return (Url+`/Formations/${id}/Quizzs`)
     },
+    GetFormationComments : (id) => {
+        return (Url+`/Formations/${id}/Comments`)
+    },
     GetQuizzQuestions : (id) => {
         return (Url+`/Quizz/${id}/Questions`)
     },

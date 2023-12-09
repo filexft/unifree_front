@@ -5,15 +5,20 @@ import BackRoutes from "../RoutesInterface";
 
 
 const Home = () => {
-  const firstlist = useFormations();// On remplace par un hoot
+  const firstlist = useFormations(); // On remplace par un hoot
   return (
-    <div className="w-screen h-screen flex flex-col overflow-x-hidden">
+    <div>
+      {(Array.isArray(firstlist)) ?
+      <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div>
       <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
       <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
       <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>
       </div>
+    </div>
+    : <h1>FirstList : {JSON.stringify(firstlist)}</h1>}
+    
     </div>
   );
 };
