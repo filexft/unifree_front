@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 const SearchList = ({ list }) => {
   const { search } = useParams();
 
-  c
+  
   const listFormationFiltered = list.filter((formation) =>
     formation.title.toLowerCase().includes(search.toLowerCase())
   );

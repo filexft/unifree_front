@@ -43,7 +43,7 @@ const UserPage = () => {
     </div>
   );
 
-  const View = <>{user.Role === "STUDENT" ? etudiantView : professeurView}</>;
+  const View = <>{user.Role !== "STUDENT" ? etudiantView : professeurView}</>;
   return (
     <div className="w-full h-screen flex flex-col">
       <Header />

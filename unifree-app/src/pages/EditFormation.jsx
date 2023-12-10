@@ -1,7 +1,23 @@
 import { useState } from "react";
 import Header from "../components/Header";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import NotFound from "./NotFound";
+import BackRoutes from "../RoutesInterface";
+import { useNavigate } from "react-router";
 
 const EditFormation = () => {
+  const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
+  const Navigate = useNavigate;
+  if (!user) {
+    return <NotFound />;
+  }
+  const Id = user.Id;
+
+  let FormationId;
+  let QuizzId;
+  let questionId;
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [lessons, setLessons] = useState([
@@ -129,10 +145,130 @@ const EditFormation = () => {
     });
     setLessons(updatedLessons);
   };
+  const fetchAll = async () => {
+    let result = true;
+    // Ajouter la récupération de l'id du prof + ajouter la formation dans la base de données ici
 
+    // Un Fetch pour ajouter la formation Creation Objet into envoi
+
+    let tmpFormation = {
+      Titre: title,
+      AuthorId: Id,
+    };
+    fetch(BackRoutes.Formations, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tmpFormation),
+    })
+      .then(async (res) => {
+        let tmp = await res.json();
+        return tmp;
+      })
+      .then((res) => {
+        FormationId = res.data.Id;
+      })
+      .catch(() => (result = false));
+
+    if (FormationId) {
+      for (let i = 0; i < lessons.length; i++) {
+        if (!lessons[i].isQuizz) {
+          // On fetch toutes les lessons classiques
+          let tmpLesson = {
+            FormationId: FormationId,
+            Titre: lessons[i].title,
+            Contenu: lessons[i].content,
+          };
+          fetch(BackRoutes.Lessons, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(tmpLesson),
+          }).catch(() => (result = false));
+        } else {
+          let tmpQuizz = {
+            FormationId: FormationId,
+            Titre: lessons[i].title,
+            Description: "Default",
+          };
+          fetch(BackRoutes.Quizz, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(tmpQuizz),
+          })
+            .then(async (res) => {
+              const tmp = await res.json();
+              console.log(tmp);
+              return tmp;
+            })
+            .then((res) => {
+              QuizzId = res.data.Id;
+            })
+            .catch(() => (result = false));
+
+          if (QuizzId) {
+            console.log("oe");
+            let questions = lessons[i].content.questions;
+            for (let j = 0; j < questions.length; j++) {
+              let questiontmp = {
+                QuizzId: QuizzId,
+                Enonce: questions[j].title,
+              };
+              fetch(BackRoutes.Qestions, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(questiontmp),
+              })
+                .then(async (res) => {
+                  const tmp = await res.json();
+                  return tmp;
+                })
+                .then((res) => (questionId = res.data.Id))
+                .catch(() => (result = false));
+
+              if (questionId) {
+                let answers = questions[j].answers;
+                for (let k = 0; k < answers.length; k++) {
+                  let tmpAnswer = {
+                    QuestionId: questionId,
+                    Right: answers[k].isCorrect,
+                    Contenu: answers[k].title,
+                  };
+                  fetch(BackRoutes.Responses, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(tmpAnswer),
+                  }).then.catch(() => (result = false));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Ajouter la récupération de l'id du prof + ajouter la formation dans la base de données ici
+    let navigate;
+    fetchAll().then((res) => {
+      const result = res
+        ? "Formation bien publiée"
+        : "Publication de la formation echouée";
+      navigate = true;
+      alert(result);
+    });
+    if (navigate) {
+      history.back();
+    }
     console.log({ title, category, lessons });
   };
 
@@ -335,21 +471,21 @@ const EditFormation = () => {
         </div>
         <div className="flex flex-row justify-between">
           <div className="flex flex-row gap-5">
-          <button
-            className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
-            type="button"
-            onClick={handleAddLesson}
-          >
-            Ajouter une leçon
-          </button>
+            <button
+              className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
+              type="button"
+              onClick={handleAddLesson}
+            >
+              Ajouter une leçon
+            </button>
 
-          <button
-            className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
-            type="button"
-            onClick={handleAddQuizz}
-          >
-            Ajouter un Quizz
-          </button>
+            <button
+              className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
+              type="button"
+              onClick={handleAddQuizz}
+            >
+              Ajouter un Quizz
+            </button>
           </div>
           <button
             className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
