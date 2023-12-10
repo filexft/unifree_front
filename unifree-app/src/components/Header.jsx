@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,9 +9,9 @@ const Header = () => {
     e.preventDefault();
     navigate(`/search/${search}`);
   };
-  const isConnect = true;
+  const isConnect = (Cookies.get('token')) ? true : false;
 
-  const userId = "jojo69";
+  const userId = (Cookies.get('token')) ? "Oe": "nan";
 
   const connectButton = (
     <Link

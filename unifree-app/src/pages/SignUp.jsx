@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "../assets/whitelogo.png";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 
 const SignUp = () => {
@@ -49,10 +50,7 @@ const SignUp = () => {
       //console.log(datares.Statut.JwtToken)
 
       if(datares.Statut.user){
-        localStorage.setItem('token', datares.Statut.JwtToken);
-        localStorage.setItem('user', JSON.stringify(datares.Statut.user));
-
-        
+        Cookies.set('token',datares.Statut.JwtToken);
         console.log(datares.Statut.user, ' : ' , datares.Statut.JwtToken)
  
         navigate('/');

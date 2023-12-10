@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "../assets/whitelogo.png";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -45,10 +46,8 @@ const Login = () => {
       console.log(datares.Message)
 
       if(datares.Statut == 200){
-        localStorage.setItem('token', datares.Message.JwtToken);
-        localStorage.setItem('user', JSON.stringify(datares.Message.user));
-        console.log(datares.Message.user, ' : ' , datares.Message.JwtToken)
- 
+        
+        Cookies.set('token',datares.Message.JwtToken);
         navigate('/');
       }else{
         throw new Error(datares.Statut.Message); 
@@ -57,8 +56,6 @@ const Login = () => {
     .catch((e) => {
       //setInputError(true)
       console.log(e)
-    }).finally(() => {
-      //setInputError(false);
     })
   } 
 

@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
 //import getFormations from "../controllers/Formations";
 //import getUsers from "../controllers/Users";
+import Cookies from "js-cookie";
+import {jwtDecode} from "jwt-decode"
 
 const UserPage = () => {
 
@@ -14,13 +16,13 @@ const UserPage = () => {
   //const formationList = getFormations();
   //const userList = getUsers();
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = Cookies.get('token') ? jwtDecode(Cookies.get('token')) : null;
 
   user.icon = "https://colab.research.google.com/drive/1uLmBBuaY65hcPZbb7OkS6Dqy6SzGb21J"
-  
   if (!user) {
     return <NotFound />;
   }
+  
   const etudiantView = (
     <>
       {/* <SlideMenu title={"Formations suivies"} list={formationList}></SlideMenu>
@@ -58,7 +60,7 @@ const UserPage = () => {
           <div className="text-md">{user.Role}</div>
           <button className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300"
             onClick={() => {
-              localStorage.clear();
+              Cookies.remove('token')
               navigate('/login');
             }}
           >
