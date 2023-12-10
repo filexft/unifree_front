@@ -18,6 +18,7 @@ const useAuthor = (id) => {
           throw new Error(res.Message);
         }
         const tmp = {
+            id : res.data.Id,
             Name : res.data.Nom,
             Prenom : res.data.Prenom,
             Email : res.data.Email

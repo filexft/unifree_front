@@ -6,6 +6,7 @@ import useComments from "../../controllers/useComments";
 import LikeImage from "/thumb_up.png";
 import useAuthor from "../../controllers/useAuthor";
 import { useEffect } from "react";
+import BackRoutes from "../../RoutesInterface";
 
 const FormationInfo = ({ formation }) => {
   
@@ -17,7 +18,7 @@ const FormationInfo = ({ formation }) => {
   
 
   // remplacer par le nom de l'utilisateur courant
-  const user = "User";
+  const user = (Author.id) ? Author.id : "User";
   var commentsList = useComments(formation.id);
 
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
@@ -41,10 +42,18 @@ const FormationInfo = ({ formation }) => {
     const comment = document.getElementById("comment");
     comment.classList.toggle("hidden");
     const content = document.getElementById("content");
-    const newComment = {  author: user, content: content.value };
+    const newComment = {  AuthorId: user, FormationId : formation.id, Contenu: content.value };
     content.value = "";
-    formation.comments.push(newComment);
-    refreshComments();
+
+    fetch(BackRoutes.Coments, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newComment)
+    }).then(() => {console.log(Author.id);
+    refreshComments()})
+    .catch(() => alert("Commentaire non envoyé, erreur"))
   }
 
   function refreshComments() {
