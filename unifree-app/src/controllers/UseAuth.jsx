@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 //import BackRoutes from '../RoutesInterface' 
 
 //const jsC = require('js-cookie');
@@ -79,44 +79,44 @@ import { useEffect, useState } from 'react';
 //     return {data, isLoading, error};
 // } 
 
-//, dataSent, usedMethod
-function useFetch(url) {
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
+// //, dataSent, usedMethod
+// function useFetch(url) {
+//     const [data, setData] = useState(null);
+//     const [isLoading, setIsLoading] = useState(false);
+//     const [error, setError] = useState(false);
 
-    useEffect(() => {
-        if (!url) return;
+//     useEffect(() => {
+//         if (!url) return;
 
-        // let options = {
-        //         method: usedMethod,
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(dataSent),
-        // }
-        const fetchData = () => {
-            fetch(url)
-                .then((res) => res.json())
-                .then((responseData) => {
-                    setData(responseData);
-                })
-                .catch((err) => {
-                    setError(true);
-                    console.log(err);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                })
-        };
-        setIsLoading(true);
-        fetchData();
+//         // let options = {
+//         //         method: usedMethod,
+//         //         headers: {
+//         //             "Content-Type": "application/json",
+//         //         },
+//         //         body: JSON.stringify(dataSent),
+//         // }
+//         const fetchData = () => {
+//             fetch(url)
+//                 .then((res) => res.json())
+//                 .then((responseData) => {
+//                     setData(responseData);
+//                 })
+//                 .catch((err) => {
+//                     setError(true);
+//                     console.log(err);
+//                 })
+//                 .finally(() => {
+//                     setIsLoading(false);
+//                 })
+//         };
+//         setIsLoading(true);
+//         fetchData();
 
-    }, [url]);
+//     }, [url]);
 
-    return { data, isLoading, error };
-}
+//     return { data, isLoading, error };
+// }
 
-export default useFetch;
+// export default useFetch;
 
 //export default { useFetch};

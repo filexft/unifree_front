@@ -1,9 +1,9 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NotFound from "./NotFound";
 
 import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
-import getFormations from "../controllers/Formations";
+//import getFormations from "../controllers/Formations";
 //import getUsers from "../controllers/Users";
 
 const UserPage = () => {
@@ -11,7 +11,7 @@ const UserPage = () => {
   const navigate = useNavigate();
 
   //const { id } = useParams();
-  const formationList = getFormations();
+  //const formationList = getFormations();
   //const userList = getUsers();
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -23,8 +23,8 @@ const UserPage = () => {
   }
   const etudiantView = (
     <>
-      <SlideMenu title={"Formations suivies"} list={formationList}></SlideMenu>
-      <SlideMenu title={"Formations likées"} list={formationList}></SlideMenu>
+      {/* <SlideMenu title={"Formations suivies"} list={formationList}></SlideMenu>
+      <SlideMenu title={"Formations likées"} list={formationList}></SlideMenu> */}
     </>
   );
   const professeurView = (
@@ -37,7 +37,7 @@ const UserPage = () => {
         Créer une formation
       </Link>
       </div>
-      <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu>
+      {/* <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu> */}
     </div>
   );
 
