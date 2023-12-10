@@ -14,6 +14,8 @@ const FormationInfo = ({ formation }) => {
   const Lessons = useLessons(formation.id);
   const Author = useAuthor(formation.author)
 
+  
+
   // remplacer par le nom de l'utilisateur courant
   const user = "User";
   var commentsList = useComments(formation.id);
@@ -71,10 +73,10 @@ const FormationInfo = ({ formation }) => {
         </p>
         <div className="flex">
           <p className=" text-[#949494] text-[13px] not-italic font-normal leading-[normal] mr-4">
-            {(Lessons.length ) ? Lessons.length : 0} leçons
+            {(Lessons.length > 0) ? Lessons.length : 0} leçons
           </p>
           <p className=" text-[#949494] text-[13px] not-italic font-normal leading-[normal]">
-            { (quizzList.length) ? quizzList.length : 0} quizz
+            { (quizzList.length > 0) ? quizzList.length : 0} quizz
           </p>
         </div>
         <div className="flex items-center justify-between mb-3">

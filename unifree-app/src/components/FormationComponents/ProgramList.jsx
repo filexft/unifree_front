@@ -2,6 +2,7 @@
 import { Link, useParams } from "react-router-dom";
 import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
+import { useEffect } from "react";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
@@ -15,12 +16,16 @@ const ProgramList = ({ formation }) => {
       window.location.reload(false);
     }, 500);
   };
-  let LessonsQuizz;
-
   const Lessons = useLessons(formation.id);
   const Quizzs = useQuizzs(formation.id);
+  let LessonsQuizz;
   
-  const lessonList = Lessons.map((lesson) => (
+  LessonsQuizz = (Array.isArray(Lessons) && Array.isArray(Quizzs)) ? [...Lessons,...Quizzs] : null; 
+
+  const lessonList = (LessonsQuizz) ? LessonsQuizz.map((lesson) => (
+    <div>
+    {
+      lesson.title ?
     <Link
       className="p-3 w-full hover:bg-gray-200"
       key={lesson.title}
@@ -33,7 +38,9 @@ const ProgramList = ({ formation }) => {
         />
       {lesson.title}
     </Link>
-  ));
+    : null}
+    </div>
+  )) : null;
 
   return (
     <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between">

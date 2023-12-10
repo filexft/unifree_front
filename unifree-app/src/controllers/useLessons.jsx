@@ -15,7 +15,7 @@ const useLessons = (id) => {
       .then((res) => {
         let LessonsList = [];
 
-        if (res.Statut == 0) {
+        if (res.Statut === 0) {
           throw new Error(res.Message);
         }
 
@@ -32,7 +32,7 @@ const useLessons = (id) => {
       })
       .then(res => setLessons(res))
       .catch((err) => setLessons({ error: true, ErrorContent: err }));
-  }, []);
+  }, [Lessons]);
   return Lessons;
 };
 

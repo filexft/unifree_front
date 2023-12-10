@@ -26,7 +26,7 @@ const useAuthor = (id) => {
       })
       .then(res => setAuthor(res))
       .catch((err) => setAuthor({ error: true, ErrorContent: err }));
-  }, []);
+  }, [Author]);
   return Author;
 };
 

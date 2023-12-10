@@ -13,6 +13,8 @@ const Lesson = () => {
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
+
+  // Faire fonctions pour récuperer les formations
   const firstList = useFormations();
   const formation = firstList.filter(
     (formation) => formation.id === formationName
