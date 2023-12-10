@@ -30,7 +30,7 @@ const ProgramList = ({ formation }) => {
       className="p-3 w-full hover:bg-gray-200"
       key={lesson.title}
       to={`${linkPrefix}${lesson.title.toLowerCase().replace(/\s+/g, "")}`}
-      onClick={refreshPage}
+      // onClick={refreshPage}
     >
       <img
         src={lesson.isQuizz ? "/quizzIcon.png" : "/lessonIcon.png"}
