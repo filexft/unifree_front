@@ -1,16 +1,23 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import NotFound from "./NotFound";
 
 import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
 import getFormations from "../controllers/Formations";
-import getUsers from "../controllers/Users";
+//import getUsers from "../controllers/Users";
 
 const UserPage = () => {
-  const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  //const { id } = useParams();
   const formationList = getFormations();
-  const userList = getUsers();
-  const user = userList.filter((user) => user.userId === id)[0];
+  //const userList = getUsers();
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  user.icon = "https://colab.research.google.com/drive/1uLmBBuaY65hcPZbb7OkS6Dqy6SzGb21J"
+  
   if (!user) {
     return <NotFound />;
   }
@@ -34,7 +41,7 @@ const UserPage = () => {
     </div>
   );
 
-  const View = <>{user.type === "Étudiant" ? etudiantView : professeurView}</>;
+  const View = <>{user.Role === "STUDENT" ? etudiantView : professeurView}</>;
   return (
     <div className="w-full h-screen flex flex-col">
       <Header />
@@ -46,10 +53,15 @@ const UserPage = () => {
         ></img>
         <div className="flex flex-col gap-7 justify-center">
           <div className="text-2xl font-semibold text-main-purple">
-            {user.username}
+            {user.Nom + ' ' + user.Prenom}
           </div>
-          <div className="text-md">{user.type}</div>
-          <button className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300">
+          <div className="text-md">{user.Role}</div>
+          <button className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300"
+            onClick={() => {
+              localStorage.clear();
+              navigate('/login');
+            }}
+          >
             Se déconnecter
           </button>
         </div>

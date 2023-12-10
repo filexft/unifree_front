@@ -1,6 +1,67 @@
+import { useState } from "react";
 import logo from "../assets/whitelogo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const [user, setUser] = useState({
+    Email : "",
+    Password: "",
+  })
+
+  
+  const navigate = useNavigate();
+  
+  const SubmitCheck =  (e) => {
+    e.preventDefault();
+    if (!user.Password && !user.Email) {
+      //setInputError(true);
+      //setTimeout(() => setInputError(false), 3000);
+      return;
+    }
+
+    //sign up
+    console.log("singing in", user);
+    fetchData();
+  };
+
+  const fetchData = () => {
+
+    
+
+    // const authToken = localStorage.getItem('token') || "";
+    // 'Authorization': "Bearer " + authToken,
+    
+    fetch("https://unifree.onrender.com/users/login", 
+      {
+        method : "POST",
+        headers: {
+                  "Content-Type": "application/json",
+                },
+        body: JSON.stringify(user),
+      }
+      )
+    .then((res) => res.json())
+    .then((datares) => {
+      console.log(datares.Message)
+
+      if(datares.Statut == 200){
+        localStorage.setItem('token', datares.Message.JwtToken);
+        localStorage.setItem('user', JSON.stringify(datares.Message.user));
+        console.log(datares.Message.user, ' : ' , datares.Message.JwtToken)
+ 
+        navigate('/');
+      }else{
+        throw new Error(datares.Statut.Message); 
+      }
+    })
+    .catch((e) => {
+      //setInputError(true)
+      console.log(e)
+    }).finally(() => {
+      //setInputError(false);
+    })
+  } 
+
   return (
     <div className="w-screen h-screen flex flex-row ">
       <div className="basis-1/2 flex flex-col items-center justify-center">
@@ -12,17 +73,21 @@ const Login = () => {
             S&apos;inscrire
           </Link>
         </div>
-        <form className="mt-7 flex flex-col gap-2">
+        <form className="mt-7 flex flex-col gap-2" onSubmit={SubmitCheck}>
           
           <input
             type="email"
             className="bg-transparent px-3 py-2 border-b border-b-secondary-grey focus:outline-none focus:border-b-slate-500"
             placeholder="Email"
+            onChange={(e) => setUser({...user, Email : e.target.value})}
+            value={user.Email}
           />
           <input
             type="password"
             className="bg-transparent px-3 py-2 border-b border-b-secondary-grey focus:outline-none focus:border-b-slate-500"
             placeholder="Mot de passe"
+            onChange={(e) => setUser({...user, Password : e.target.value})}
+            value={user.Password}
           />
           <button
             type="submit"
