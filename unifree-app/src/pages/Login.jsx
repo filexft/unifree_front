@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../assets/whitelogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -10,13 +10,14 @@ const Login = () => {
   })
 
   
+  const [inputError, setInputError] = useState(false);
+  
   const navigate = useNavigate();
   
   const SubmitCheck =  (e) => {
     e.preventDefault();
     if (!user.Password && !user.Email) {
-      //setInputError(true);
-      //setTimeout(() => setInputError(false), 3000);
+      setInputError(true);
       return;
     }
 
@@ -25,13 +26,12 @@ const Login = () => {
     fetchData();
   };
 
-  const fetchData = () => {
-
+  useEffect(() => {
+      setTimeout(() => setInputError(false), 3000);
+    }, [inputError])
     
 
-    // const authToken = localStorage.getItem('token') || "";
-    // 'Authorization': "Bearer " + authToken,
-    
+  const fetchData = () => {  
     fetch("https://unifree.onrender.com/users/login", 
       {
         method : "POST",
@@ -50,7 +50,8 @@ const Login = () => {
         Cookies.set('token',datares.Message.JwtToken);
         navigate('/');
       }else{
-        throw new Error(datares.Statut.Message); 
+        
+        setInputError(true);
       }
     })
     .catch((e) => {
@@ -71,7 +72,9 @@ const Login = () => {
           </Link>
         </div>
         <form className="mt-7 flex flex-col gap-2" onSubmit={SubmitCheck}>
-          
+           {
+            inputError == true ?(<p className="bg-red-200 rounded-md p-4">l'email / mot de passe sont  incorrect !</p>): null
+          }
           <input
             type="email"
             className="bg-transparent px-3 py-2 border-b border-b-secondary-grey focus:outline-none focus:border-b-slate-500"

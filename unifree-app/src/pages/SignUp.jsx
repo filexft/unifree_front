@@ -19,11 +19,13 @@ const SignUp = () => {
   
   const SubmitCheck =  (e) => {
     e.preventDefault();
+    
     if (user.Password !== user.passVerif) {
       setInputError(true);
       setTimeout(() => setInputError(false), 3000);
       return;
     }
+    setUser({...user, passVerif : ""});
     delete user.passVerif;
 
     //sign up
@@ -112,6 +114,7 @@ const SignUp = () => {
             placeholder="Mot de passe"
             onChange={(e) => setUser({...user, Password : e.target.value})}
             value={user.Password}
+            minLength={6}
             required
           />
           <input
