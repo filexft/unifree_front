@@ -21,7 +21,7 @@ const Lesson = () => {
   if (!formation) {
     return <NotFound />;
   }
-
+    
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
 
@@ -33,7 +33,7 @@ const Lesson = () => {
     (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
   )[0] : null; 
 
-  var content = "Rien à afficher";
+  var content = "Quizz Terminé !!! ";
   console.log(lesson)
 
   const setRead = () => {

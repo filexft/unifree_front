@@ -206,6 +206,7 @@ const EditFormation = () => {
               return tmp;
             })
             .then((res) => {
+              console.log()
               QuizzId = res.data.Id;
             })
             .catch(() => (result = false));

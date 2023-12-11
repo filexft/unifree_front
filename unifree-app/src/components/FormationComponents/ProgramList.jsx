@@ -23,7 +23,7 @@ const ProgramList = ({ formation }) => {
   LessonsQuizz = (Array.isArray(Lessons) && Array.isArray(Quizzs)) ? [...Lessons,...Quizzs] : null; 
 
   const lessonList = (LessonsQuizz) ? LessonsQuizz.map((lesson) => (
-    <div>
+    <>
     {
       lesson.title ?
     <Link
@@ -39,7 +39,7 @@ const ProgramList = ({ formation }) => {
       {lesson.title}
     </Link>
     : null}
-    </div>
+    </>
   )) : null;
 
   return (
