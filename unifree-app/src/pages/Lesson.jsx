@@ -17,6 +17,10 @@ const Lesson = () => {
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
   const formation = useFormation(formationName);
+
+  if (formation.error) {
+    return <NotFound />;
+  }
   
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
@@ -50,7 +54,7 @@ const Lesson = () => {
     if (currentIndex <= nbQuestion) {
       suivantBtn = (
         <button 
-          className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
+          className="mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
           onClick={() => {
             setCurrentIndex(currentIndex + 1);
             const submitButton = document.getElementById("Submit");
@@ -63,10 +67,14 @@ const Lesson = () => {
       content = (
         <>
           <Quizz
+            questionIndex={currentIndex}
+            length={nbQuestion}
             title={currentQuestion.title}
             responses={currentQuestion.answers}
           />
+          <div className="w-full flex justify-end">
           {suivantBtn}
+          </div>
         </>
       );
     }
