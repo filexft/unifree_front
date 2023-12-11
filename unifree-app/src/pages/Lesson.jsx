@@ -17,11 +17,7 @@ const Lesson = () => {
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
   const formation = useFormation(formationName);
-
-  if (!formation) {
-    return <NotFound />;
-  }
-    
+  
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
 

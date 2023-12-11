@@ -31,7 +31,7 @@ const useComments = (id) => {
         .then(res => {
           setComments(res)})
         .catch((err) => setComments({ error: true, ErrorContent: err }));
-    }, [Comments]);
+    }, [id]);
     return Comments;
 }
 

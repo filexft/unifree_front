@@ -32,7 +32,7 @@ const useLessons = (id) => {
       })
       .then(res =>setLessons(res))
       .catch((err) => setLessons({ error: true, ErrorContent: err }));
-  }, [Lessons]);
+  }, [id]);
   return Lessons;
 };
 

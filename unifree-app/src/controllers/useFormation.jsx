@@ -26,7 +26,7 @@ const useFormation = (id) => {
       })
       .then(res => setFormation(res))
       .catch((err) => setFormation({ error: true, ErrorContent: err }));
-  }, [Formation]);
+  }, [id]);
   return Formation;
 };
 
