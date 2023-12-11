@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-const Quizz = ({ title, responses }) => {
+const Quizz = ({ questionIndex, length, title, responses }) => {
   // response.isCorrect == true ? 'Correct' : 'Incorrect'
   const setChecked = (e) => {
     e.target.classList.toggle("bg-gray-200");
@@ -26,14 +26,12 @@ const Quizz = ({ title, responses }) => {
     const selected = document.querySelectorAll(".bg-gray-200");
     const submit = document.getElementById("Submit");
     submit.classList.add("hidden");
-    
-    
+
     // Affichage des réponses
     selected.forEach((element) => {
       if (element.value == "true") {
         element.classList.add("bg-green-200");
         element.classList.add("styling");
-
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");
@@ -45,10 +43,16 @@ const Quizz = ({ title, responses }) => {
     });
   };
 
-    return (
+  return (
     <div className="flex flex-col items-center">
       <p className="font-semibold mb-4">{title}</p>
-      <div id="answersList" className="flex flex-wrap justify-center gap-3 overflow-hidden">
+      <p className="text-violet-600 border-2 border-violet-600 rounded-full py-2 px-3 mb-6 mr-auto font-semibold">
+        Question {questionIndex + 1}/{length + 1}
+      </p>
+      <div
+        id="answersList"
+        className="flex flex-wrap justify-center gap-3 overflow-hidden"
+      >
         {responses.map((response, index) => (
           <button
             onClick={setChecked}

@@ -5,7 +5,6 @@ import useQuizzs from "../../controllers/useQuizzs";
 import useComments from "../../controllers/useComments";
 import LikeImage from "/thumb_up.png";
 import useAuthor from "../../controllers/useAuthor";
-import { useEffect } from "react";
 import BackRoutes from "../../RoutesInterface";
 
 const FormationInfo = ({ formation }) => {

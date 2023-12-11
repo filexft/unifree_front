@@ -2,7 +2,6 @@
 import { Link, useParams } from "react-router-dom";
 import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
-import { useEffect } from "react";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
