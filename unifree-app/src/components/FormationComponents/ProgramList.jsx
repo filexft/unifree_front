@@ -15,7 +15,7 @@ const ProgramList = ({ formation }) => {
     setTimeout(() => {
       window.location.reload(false);
     }, 500);
-  };
+  }
   const Lessons = useLessons(formation.id);
   const Quizzs = useQuizzs(formation.id);
   let LessonsQuizz;

@@ -32,7 +32,7 @@ const useFormations = () => {
       })
       .then(res => setFormations(res))
       .catch((err) => setFormations({ error: true, ErrorContent: err }));
-  }, [Formations]);
+  }, []);
   return Formations;
 
   const Formation1 = Formation({

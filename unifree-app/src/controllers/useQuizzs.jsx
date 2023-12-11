@@ -20,8 +20,8 @@ const useQuizzs = (id) => {
       })
       .then(res => setQuizzs(res))
       .catch((err) => setQuizzs({ error: true, ErrorContent: err }));
-  }, [Quizzs]);
+  }, [id]);
   return Quizzs;
-};
+};  
 
 export default useQuizzs;
