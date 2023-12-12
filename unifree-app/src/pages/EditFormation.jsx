@@ -250,6 +250,7 @@ const EditFormation = () => {
       alert(result); 
     })
     .finally(() =>Navigate(`/u/${Id}`));
+    
   };
 
   return (
