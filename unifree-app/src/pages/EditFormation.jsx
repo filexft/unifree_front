@@ -255,7 +255,7 @@ const EditFormation = () => {
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
-      <form className="p-5" onSubmit={handleSubmit}>
+      <div className="p-5">
         <div className="text-main-purple text-xl font-bold">
           Créer une formation
         </div>
@@ -471,11 +471,12 @@ const EditFormation = () => {
           <button
             className="font-semibold bg-main-purple mt-7 rounded-full hover:bg-purple-900 text-white p-3"
             type="submit"
+            onClick={handleSubmit}
           >
             Publier la formation
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
