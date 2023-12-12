@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
   const [search, setSearch] = useState("");
@@ -11,7 +12,7 @@ const Header = () => {
   };
   const isConnect = (Cookies.get('token')) ? true : false;
 
-  const userId = (Cookies.get('token')) ? "Oe": "nan";
+  const userId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id: "Error";
 
   const connectButton = (
     <Link
@@ -24,7 +25,7 @@ const Header = () => {
 
   const profileButton = (
     <Link
-      to={"/u/" + userId}
+      to={"/u/" + JSON.stringify(userId)}
       className="flex items-center px-6 py-2 border-2 border-main-purple font-semibold text-main-purple rounded hover:bg-main-purple hover:text-white duration-300"
     >
       My Profile

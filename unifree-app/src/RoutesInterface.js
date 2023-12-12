@@ -8,7 +8,7 @@ const BackRoutes = {
     Likes : Url+"/Likes/",
     Quizz : Url+"/Quizz/",
     Qestions : Url+"/Questions/",
-    Responses : Url+"/Reponse/",
+    Responses : Url+"/Responses/",
 
     SpecificUser : Url+"/Users/",
     AllUsers : Url+"/Users/All",

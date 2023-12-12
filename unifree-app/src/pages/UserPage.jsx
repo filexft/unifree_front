@@ -15,7 +15,7 @@ const UserPage = () => {
   //const { id } = useParams();
   //const formationList = getFormations();
   //const userList = getUsers();
-
+  // Recuperation des formations des Users 
   const user = Cookies.get('token') ? jwtDecode(Cookies.get('token')) : null;
 
   user.icon = "https://colab.research.google.com/drive/1uLmBBuaY65hcPZbb7OkS6Dqy6SzGb21J"

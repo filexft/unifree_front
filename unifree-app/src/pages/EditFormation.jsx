@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 const EditFormation = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
-  const Navigate = useNavigate;
+  const Navigate = useNavigate();
   if (!user) {
     return <NotFound />;
   }
@@ -154,22 +154,18 @@ const EditFormation = () => {
     let tmpFormation = {
       Titre: title,
       AuthorId: Id,
+      Categorie : category
     };
-    fetch(BackRoutes.Formations, {
+    let res = await fetch(BackRoutes.Formations, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(tmpFormation),
     })
-      .then(async (res) => {
-        let tmp = await res.json();
-        return tmp;
-      })
-      .then((res) => {
-        FormationId = res.data.Id;
-      })
-      .catch(() => (result = false));
+    res = await res.json();
+    if (res.Statut != 200) result = false;
+    FormationId = res.data.Id;
 
     if (FormationId) {
       for (let i = 0; i < lessons.length; i++) {
@@ -180,97 +176,80 @@ const EditFormation = () => {
             Titre: lessons[i].title,
             Contenu: lessons[i].content,
           };
-          fetch(BackRoutes.Lessons, {
+          let resLesson = await fetch(BackRoutes.Lessons, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(tmpLesson),
-          }).catch(() => (result = false));
+          })
+          resLesson = await resLesson.json()
+          if (resLesson.Statut != 200) result = false;
         } else {
+          // Faire une double boucle pour créer un objet opti
           let tmpQuizz = {
             FormationId: FormationId,
-            Titre: lessons[i].title,
-            Description: "Default",
-          };
-          fetch(BackRoutes.Quizz, {
+            Titre : lessons[i].title,
+            Description : "DefaultDescription"
+          }
+          let resQuizz = await fetch(BackRoutes.Quizz,{
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(tmpQuizz),
-          })
-            .then(async (res) => {
-              const tmp = await res.json();
-              console.log(tmp);
-              return tmp;
-            })
-            .then((res) => {
-              console.log()
-              QuizzId = res.data.Id;
-            })
-            .catch(() => (result = false));
+            body: JSON.stringify(tmpQuizz),})
+          resQuizz = await resQuizz.json();
+          if (resQuizz.Statut == 0) result = false;
+          const questions = (result) ? lessons[i].content.questions : [];
 
-          if (QuizzId) {
-            console.log("oe");
-            let questions = lessons[i].content.questions;
-            for (let j = 0; j < questions.length; j++) {
-              let questiontmp = {
-                QuizzId: QuizzId,
-                Enonce: questions[j].title,
-              };
-              fetch(BackRoutes.Qestions, {
+          for(let j = 0;j<questions.length;j++){
+            let tmpQuestion ={
+              QuizzId: resQuizz.data.Id,
+              Enonce : questions[j].title
+            }
+            let resQuestion = await fetch(BackRoutes.Qestions,{
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(tmpQuestion)})
+            resQuestion = await resQuestion.json();
+            
+            if (resQuestion.Statut != 200) result = false;
+            let answers = (result) ? questions[j].answers : [];
+            for(let k = 0;k<answers.length;k++){
+              console.log(answers[k])
+              let tmpAnswer = {
+                QuestionId: resQuestion.data.Id,
+                Right : answers[k].isCorrect,
+                Contenu : answers[k].title
+              }
+              let resAnswer = await fetch(BackRoutes.Responses,{
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify(questiontmp),
-              })
-                .then(async (res) => {
-                  const tmp = await res.json();
-                  return tmp;
-                })
-                .then((res) => (questionId = res.data.Id))
-                .catch(() => (result = false));
-
-              if (questionId) {
-                let answers = questions[j].answers;
-                for (let k = 0; k < answers.length; k++) {
-                  let tmpAnswer = {
-                    QuestionId: questionId,
-                    Right: answers[k].isCorrect,
-                    Contenu: answers[k].title,
-                  };
-                  fetch(BackRoutes.Responses, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(tmpAnswer),
-                  }).then.catch(() => (result = false));
-                }
-              }
+                body: JSON.stringify(tmpAnswer)})
+                resAnswer = await resAnswer.json();
+                if (resAnswer.Statut != 200) result = false;
             }
-          }
+          };
+
         }
       }
     }
-    return true;
+    return result;
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    let navigate;
-    fetchAll().then((res) => {
+    fetchAll()
+    .then((res) => {
       const result = res
         ? "Formation bien publiée"
         : "Publication de la formation echouée";
-      navigate = true;
-      alert(result);
-    });
-    if (navigate) {
-      history.back();
-    }
-    console.log({ title, category, lessons });
+      alert(result); 
+    })
+    .finally(() =>Navigate(`/u/${Id}`));
   };
 
   return (
@@ -320,6 +299,7 @@ const EditFormation = () => {
                     </label>
                     <input
                       type="text"
+                      required
                       id={`lessonTitle${index}`}
                       value={lesson.title}
                       placeholder="Écrivez le titre du quizz ici..."
