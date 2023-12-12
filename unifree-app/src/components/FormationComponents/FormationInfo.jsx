@@ -6,6 +6,7 @@ import useComments from "../../controllers/useComments";
 import LikeImage from "/thumb_up.png";
 import useAuthor from "../../controllers/useAuthor";
 import BackRoutes from "../../RoutesInterface";
+import Comment from "../Comment";
 
 const FormationInfo = ({ formation }) => {
   
@@ -50,12 +51,13 @@ const FormationInfo = ({ formation }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newComment)
-    }).then(() => {console.log(Author.id);
-    refreshComments()})
+    }).then(() => alert("Commentaire crée"))
     .catch(() => alert("Commentaire non envoyé, erreur"))
+    .finally(() => refreshComments())
   }
 
   function refreshComments() {
+    window.location.reload();
     if (Array.isArray(commentsList)){
     commentsList = commentsList.map((comment) => (
       <div key={comment.author} className="border rounded-xl p-3 mb-2">
@@ -114,10 +116,7 @@ const FormationInfo = ({ formation }) => {
         </div>
         { (!commentsList.loading && !commentsList.error) ? 
           commentsList.map((comment) => (
-          <div key={comment.author} className="border rounded-xl p-3 mb-2">
-            <div className="text-xs font-semibold ">{comment.author}</div>
-            <div>{comment.content}</div>
-          </div>
+          <Comment comment={comment}/>
         )) : null}
       </div>
     </div>
