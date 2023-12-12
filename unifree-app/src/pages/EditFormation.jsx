@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import NotFound from "./NotFound";
 import BackRoutes from "../RoutesInterface";
 import { useNavigate } from "react-router";
+import Spinner from "./Spinner";
 
 const EditFormation = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
@@ -17,6 +18,10 @@ const EditFormation = () => {
   let FormationId;
   let QuizzId;
   let questionId;
+
+  //loading 
+  
+  const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -233,7 +238,7 @@ const EditFormation = () => {
                 resAnswer = await resAnswer.json();
                 if (resAnswer.Statut != 200) result = false;
             }
-          };
+          }
 
         }
       }
@@ -242,19 +247,29 @@ const EditFormation = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     fetchAll()
     .then((res) => {
+      
+      setLoading(false)
       const result = res
         ? "Formation bien publiée"
         : "Publication de la formation echouée";
       alert(result); 
     })
-    .finally(() =>Navigate(`/u/${Id}`));
+    .finally(() =>{
+      
+      setLoading(false)
+      Navigate(`/u/${Id}`)
+    });
   };
 
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
+      {
+        loading? <Spinner /> :''
+      }
       <div className="p-5">
         <div className="text-main-purple text-xl font-bold">
           Créer une formation
