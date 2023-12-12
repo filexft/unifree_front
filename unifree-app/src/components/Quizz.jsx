@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-const Quizz = ({ questionIndex, length, title, responses }) => {
+const Quizz = ({ questionIndex, scoreIndex, length, title, responses, setScore }) => {
   // response.isCorrect == true ? 'Correct' : 'Incorrect'
   const setChecked = (e) => {
     e.target.classList.toggle("bg-gray-200");
@@ -32,6 +32,7 @@ const Quizz = ({ questionIndex, length, title, responses }) => {
       if (element.value == "true") {
         element.classList.add("bg-green-200");
         element.classList.add("styling");
+        setScore();
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");
@@ -49,6 +50,7 @@ const Quizz = ({ questionIndex, length, title, responses }) => {
       <p className="text-violet-600 border-2 border-violet-600 rounded-full py-2 px-3 mb-6 mr-auto font-semibold">
         Question {questionIndex + 1}/{length + 1}
       </p>
+      <p>{scoreIndex}</p>
       <div
         id="answersList"
         className="flex flex-wrap justify-center gap-3 overflow-hidden"

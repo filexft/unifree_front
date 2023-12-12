@@ -14,6 +14,8 @@ const Lesson = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [currentScore, setCurrentScore] = useState(0);
+
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
   const formation = useFormation(formationName);
@@ -24,6 +26,11 @@ const Lesson = () => {
   
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
+
+
+  function handleScore() {
+    setCurrentScore(currentScore+1)
+  }
 
   let LessonsQuizz;
   LessonsQuizz = (Array.isArray(lessons) && Array.isArray(quizzs)) ? [...lessons,...quizzs] : null; 
@@ -68,6 +75,8 @@ const Lesson = () => {
         <>
           <Quizz
             questionIndex={currentIndex}
+            scoreIndex={currentScore}
+            setScore={handleScore}
             length={nbQuestion}
             title={currentQuestion.title}
             responses={currentQuestion.answers}
