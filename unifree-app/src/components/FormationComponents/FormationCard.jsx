@@ -12,8 +12,6 @@ const FormationCard = ({ formation }) => {
   const Lessons = useLessons(formation.id)
   const quizzList = useQuizzs(formation.id)
 
-  const uer 
-
   return (
     <div className="h-full shrink-0 border rounded-[18px] border-solid border-[#C7C7C7]">
       <Link className="flex flex-col items-center" to={`/${formation.id}`}>
