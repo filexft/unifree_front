@@ -7,6 +7,8 @@ import LikeImage from "/thumb_up.png";
 import useAuthor from "../../controllers/useAuthor";
 import BackRoutes from "../../RoutesInterface";
 import Comment from "../Comment";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const FormationInfo = ({ formation }) => {
   
@@ -15,22 +17,39 @@ const FormationInfo = ({ formation }) => {
   const Lessons = useLessons(formation.id);
   const Author = useAuthor(formation.author)
 
+  const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
+
   
+  let tmpLike = {
+    Id: null,
+    AuthorId: UserId,
+    FormationId: formation.id
+  }
 
   // remplacer par le nom de l'utilisateur courant
   const user = (Author.id) ? Author.id : "User";
   var commentsList = useComments(formation.id);
 
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
-  function toggleLike() {
+  const toggleLike = async() => {
     const likeBtn = document.getElementById("likeBtn");
     if (likeBtn.src.includes("thumb_up.png")) {
       likeBtn.src = "/thumb_up_filled.png";
-      formation.likeCount++;
+      let result = await fetch(BackRoutes.Likes,{method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tmpLike)})
+      result = await result.json();
+      tmpLike.Id = result.data.Id;
     } else {
       likeBtn.src = "/thumb_up.png";
-      formation.likeCount--;
+      fetch(BackRoutes.Likes+tmpLike.Id,{method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }})
     }
+
   }
 
   function addComment() {
@@ -42,7 +61,7 @@ const FormationInfo = ({ formation }) => {
     const comment = document.getElementById("comment");
     comment.classList.toggle("hidden");
     const content = document.getElementById("content");
-    const newComment = {  AuthorId: user, FormationId : formation.id, Contenu: content.value };
+    const newComment = {  AuthorId: UserId, FormationId : formation.id, Contenu: content.value };
     content.value = "";
 
     fetch(BackRoutes.Coments, {
