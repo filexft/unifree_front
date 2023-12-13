@@ -5,6 +5,7 @@ import useQuizzs from "../../controllers/useQuizzs";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import useCompleted from "../../controllers/useCompleted";
+import {SpinnerMin }from "../Spinner";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
@@ -52,7 +53,7 @@ const ProgramList = ({ formation }) => {
 
   return (
     <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between">
-      {lessonList}
+      {lessonList? lessonList: <SpinnerMin/>}
     </div>
   );
 };

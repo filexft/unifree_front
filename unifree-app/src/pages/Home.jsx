@@ -3,6 +3,7 @@ import SlideMenu from "../components/SlideMenu";
 import useFormations from "../controllers/useFormations";
 import BackRoutes from "../RoutesInterface";
 import Cookies from "js-cookie";
+import Spinner from "../components/Spinner";
 
 
 const Home = () => {
@@ -18,7 +19,7 @@ const Home = () => {
       <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>
       </div>
     </div>  
-    : <h1>FirstList : {JSON.stringify(firstlist)}</h1>}
+    : <Spinner />}
     
     </div>
   );

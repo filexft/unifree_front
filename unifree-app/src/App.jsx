@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import UserPage from "./pages/UserPage";
 import Formation from "./pages/Formation";
-import SignUp from "./pages/SignUP";
+import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 import Lesson from "./pages/Lesson";
 import EditFormation from "./pages/EditFormation";
