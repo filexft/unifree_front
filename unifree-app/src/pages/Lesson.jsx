@@ -47,12 +47,9 @@ const Lesson = () => {
   var content = "Quizz Terminé !!! ";
   console.log(lesson)
 
-  const setRead = async() => {
-    // const lessonList = formation[0].lesson;
-    // console.log(lessonList);
-    // const currentLesson = lessonList.filter(
-    //   (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
-    // )[0];
+  const fetchLessonsStatus = async(lesson) => {
+
+
     let res = await fetch(BackRoutes.CheckIsJoinedFormation+formationName,{
       method: "POST",
       headers: {
@@ -60,7 +57,41 @@ const Lesson = () => {
       },
       body: JSON.stringify({UserId: userId}),})
       res = await res.json()
-    alert(JSON.stringify(res))
+    if (!res.data){
+      let res2 = await fetch(BackRoutes.JoinFormation+formationName,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({UserId: userId}),})
+      res2 = await res2.json();
+    }
+    let res3 = await fetch(BackRoutes.ChecIsReadLesson+lesson.id,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({UserId: userId}),})
+    res3 = await res3.json()
+    if (!res3.data){
+      const route = (lesson.isQuizz) ? BackRoutes.PutIsCompleteQuizz : BackRoutes.PutIsReadLesson;
+      let res4 = await fetch(route+lesson.id,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({UserId: userId}),})
+      res4 = await res4.json()
+      console.log(res4)
+      if (res4.Statut == 0) throw new Error("Statut non modifiées")
+      return "Lecon ajoutés au Lus"
+    }
+    return "Lecon déja Lue !!! "
+  }
+
+  const setRead = async(lesson) => {
+    fetchLessonsStatus(lesson)
+    // Faire le loading ici 
   }
 
   if (lesson){
@@ -124,7 +155,7 @@ const Lesson = () => {
             ></img>
             <div className="p-10 whitespace-pre-line">{content}</div>
             <button
-              onClick={setRead}
+              onClick={setRead(lesson)}
               className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
             >
               Lu
