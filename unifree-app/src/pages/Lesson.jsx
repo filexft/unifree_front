@@ -66,7 +66,8 @@ const Lesson = () => {
         body: JSON.stringify({UserId: userId}),})
       res2 = await res2.json();
     }
-    let res3 = await fetch(BackRoutes.ChecIsReadLesson+lesson.id,{
+    const route = (lesson.isQuizz) ? BackRoutes.CheckIsCompleteQuizz : BackRoutes.ChecIsReadLesson
+    let res3 = await fetch(route+lesson.id,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,15 +75,15 @@ const Lesson = () => {
       body: JSON.stringify({UserId: userId}),})
     res3 = await res3.json()
     if (!res3.data){
-      const route = (lesson.isQuizz) ? BackRoutes.PutIsCompleteQuizz : BackRoutes.PutIsReadLesson;
-      let res4 = await fetch(route+lesson.id,{
+      const route2 = (lesson.isQuizz) ? BackRoutes.PutIsCompleteQuizz : BackRoutes.PutIsReadLesson;
+      let res4 = await fetch(route2+lesson.id,{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({UserId: userId}),})
       res4 = await res4.json()
-      console.log(res4)
+      console.log(res4  )
       if (res4.Statut == 0) throw new Error("Statut non modifiées")
       return "Lecon ajoutés au Lus"
     }
@@ -91,6 +92,7 @@ const Lesson = () => {
 
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
+    .then((res) => alert(res))
     // Faire le loading ici 
   }
 
