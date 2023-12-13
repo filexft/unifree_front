@@ -26,9 +26,9 @@ const UserPage = () => {
     return <NotFound />;
   }
 
-  const FollowedFormations = useFollowedFormations(user.Id);
+  const FollowedFormations= useFollowedFormations(user.Id);
   const CreatedFormations = useCreatedFormations(user.Id);
-  const LikedFormations = useLikedFormations(user.Id);
+  const LikedFormations= useLikedFormations(user.Id);
 
   const etudiantView = (
     <>
