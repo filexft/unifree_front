@@ -10,14 +10,14 @@ import { jwtDecode } from "jwt-decode";
 const Formation = () => {
   const { id } = useParams();
   const formation = useFormation(parseInt(id));
-  const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
+  const userid = Cookies.get("token") ? jwtDecode(Cookies.get("token")).Id : null;
 
   if (!formation) {
     return <NotFound />;
   }
   
   const editButton =
-    user.Id == formation.author ? (
+    userid == formation.author ? (
       <div className="w-full flex align-center justify-center">
         <Link
           to="/edit-formation"

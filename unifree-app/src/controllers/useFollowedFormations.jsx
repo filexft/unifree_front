@@ -20,12 +20,13 @@ const useFollowedFormations = (id) => {
           throw new Error(res.Message);
         }
         console.log(res)
-
+        let i = 0;
         res.data.forEach((el) => {
           let tmpFormation = {
-            id: el[0].Id,
-            title: el[0].Titre
+            id: el[i].Id,
+            title: el[i].Titre
           };
+          i++;
           FormationsList.push(tmpFormation);
         });
         return FormationsList;

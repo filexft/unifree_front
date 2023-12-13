@@ -9,6 +9,8 @@ import BackRoutes from "../../RoutesInterface";
 import Comment from "../Comment";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import useLikes from "../../controllers/UseLikes";
+import Spinner from "../Spinner";
 
 const FormationInfo = ({ formation, showEditButton }) => {
   
@@ -16,6 +18,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
   const quizzList = useQuizzs(formation.id);
   const Lessons = useLessons(formation.id);
   const Author = useAuthor(formation.author)
+  console.log(Cookies.get('token'))
   const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
   
   let tmpLike = {
@@ -113,7 +116,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
           </p>
           <div className="flex flex-row">
             <p className=" text-[#949494] text-base not-italic font-medium leading-[normal]">
-              {formation.likeCount} likes
+              
             </p>
             <button>
               <img
