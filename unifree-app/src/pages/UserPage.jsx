@@ -68,7 +68,7 @@ const UserPage = () => {
       <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
         <img
           className="w-44 h-44 object-cover rounded-full"
-          src={user.icon}
+          src="/default_pp.png"
         ></img>
         <div className="flex flex-col gap-7 justify-center">
           <div className="text-2xl font-semibold text-main-purple">
