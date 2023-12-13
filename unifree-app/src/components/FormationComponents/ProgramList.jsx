@@ -45,7 +45,7 @@ const ProgramList = ({ formation }) => {
         src={lesson.isQuizz ? "/quizzIcon.png" : "/lessonIcon.png"}
         className={`w-6 h-6 mr-4 inline-block ${(Array.isArray(LessonsCompleted) && LessonsCompleted.find(Lesson => Lesson.id === lesson.id && Lesson.isQuizz === lesson.isQuizz))? 'grayscale-0' : 'grayscale'}`}
         />
-      {lesson.title}{JSON.stringify(LessonsCompleted)}
+      {lesson.title}
     </Link>
     : null}
     </>
