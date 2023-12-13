@@ -30,7 +30,7 @@ const Quizz = ({ questionIndex, scoreIndex, length, title, responses, setScore }
     // Affichage des réponses
     selected.forEach((element) => {
       if (element.value == "true") {
-        element.classList.add("bg-green-200");
+        element.classList.add("bg-green-300");
         element.classList.add("styling");
         setScore();
       } else {
