@@ -178,7 +178,7 @@ const Lesson = () => {
             {
               !(Array.isArray(LessonsCompleted) && LessonsCompleted.find(Lesson => Lesson.id === lesson.id && Lesson.isQuizz === lesson.isQuizz)) ?
             <button
-              onClick={() => {setRead(lesson)}}
+              onClick={setRead(lesson)}
               className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
             >
               Lu
