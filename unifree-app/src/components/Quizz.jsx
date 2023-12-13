@@ -1,6 +1,13 @@
 /* eslint-disable react/prop-types */
 
-const Quizz = ({ questionIndex, scoreIndex, length, title, responses, setScore }) => {
+const Quizz = ({
+  questionIndex,
+  scoreIndex,
+  length,
+  title,
+  responses,
+  setScore,
+}) => {
   // response.isCorrect == true ? 'Correct' : 'Incorrect'
   const setChecked = (e) => {
     e.target.classList.toggle("bg-gray-200");
@@ -47,10 +54,14 @@ const Quizz = ({ questionIndex, scoreIndex, length, title, responses, setScore }
   return (
     <div className="flex flex-col items-center">
       <p className="font-semibold mb-4">{title}</p>
-      <p className="text-violet-600 border-2 border-violet-600 rounded-full py-2 px-3 mb-6 mr-auto font-semibold">
-        Question {questionIndex + 1}/{length + 1}
-      </p>
-      <p>{scoreIndex}</p>
+      <div className="flex justify-between w-full">
+        <p className="text-main-purple border-2 border-main-purple rounded-full py-2 px-3 mb-6 mr-auto font-semibold">
+          Question {questionIndex + 1}/{length + 1}
+        </p>
+        <p className="text-white bg-main-purple rounded-full py-2 px-3 mb-6 font-semibold">
+          Score : {scoreIndex}
+        </p>
+      </div>
       <div
         id="answersList"
         className="flex flex-wrap justify-center gap-3 overflow-hidden"
