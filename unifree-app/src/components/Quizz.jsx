@@ -17,13 +17,13 @@ const Quizz = ({
 
   // Reset des couleurs des réponses
   setStart.forEach((element) => {
-    if (element.classList.contains("bg-green-200")) {
-      element.classList.remove("bg-green-200");
+    if (element.classList.contains("bg-green-300")) {
+      element.classList.remove("bg-green-300");
     } else {
       element.classList.remove("bg-red-200");
       element.classList.remove("styling");
       const goodAnswer = document.querySelector('[value="true"]');
-      goodAnswer.classList.remove("border-green-200");
+      goodAnswer.classList.remove("border-green-300");
       goodAnswer.classList.remove("border-4");
     }
     element.classList.remove("bg-gray-200");
@@ -47,7 +47,7 @@ const Quizz = ({
         element.classList.add("bg-red-200");
         element.classList.add("styling");
         const goodAnswer = document.querySelector('[value="true"]');
-        goodAnswer.classList.add("border-green-200");
+        goodAnswer.classList.add("border-green-300");
         goodAnswer.classList.add("border-4");
         goodAnswer.classList.add("styling");
       }
