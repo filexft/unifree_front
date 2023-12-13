@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 const FormationCard = ({ formation }) => {
   const Cover =
     "https://www.batisafe.fr/wp-content/uploads/2020/04/POST_FORMATION-EN-LIGNE.jpg";
-
   const Lessons = useLessons(formation.id);
   const quizzList = useQuizzs(formation.id);
   const likes = useLikes(formation.id);

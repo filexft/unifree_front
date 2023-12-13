@@ -12,6 +12,7 @@ import BackRoutes from "../RoutesInterface";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import useCompleted from "../controllers/useCompleted";
+import Spinner from "../components/Spinner";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
@@ -19,6 +20,7 @@ const Lesson = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [currentScore, setCurrentScore] = useState(0);
+  const [loading,setLoading] = useState(false);
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
@@ -104,8 +106,10 @@ const Lesson = () => {
 
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
-    .finally(() => refreshPage())
-    // Faire le loading ici 
+    .finally(() => {
+      refreshPage();
+      setLoading(false)})
+    setLoading(true)
   }
 
   if (lesson){
@@ -149,6 +153,8 @@ const Lesson = () => {
 
   return (
     <>
+    {!loading ?
+    <>
     { lesson ? 
     <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
@@ -183,7 +189,9 @@ const Lesson = () => {
         </div>
       </div>
     </div>
-    : <h1>{JSON.stringify(lesson)}</h1>}
+    : <h1>{JSON.stringify(lesson)}</h1>} 
+    </>
+    : <Spinner/>}
     </>
   );
 };
