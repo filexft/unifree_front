@@ -34,12 +34,15 @@ const Quizz = ({
     const submit = document.getElementById("Submit");
     submit.classList.add("hidden");
 
+    console.log(selected)
     // Affichage des réponses
     selected.forEach((element) => {
       if (element.value == "true") {
-        element.classList.add("bg-green-300");
+        console.log("treu val")
         element.classList.add("styling");
+        element.classList.add("bg-green-300");
         setScore();
+        console.log(element)
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");
@@ -48,6 +51,7 @@ const Quizz = ({
         goodAnswer.classList.add("border-4");
         goodAnswer.classList.add("styling");
       }
+      console.log(element.value)
     });
   };
 

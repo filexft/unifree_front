@@ -33,7 +33,7 @@ const Lesson = () => {
 
 
   function handleScore() {
-    setCurrentScore(currentScore+1)
+    setCurrentScore(currentScore => currentScore+1)
   }
 
   let LessonsQuizz;
@@ -92,11 +92,11 @@ const Lesson = () => {
 
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
-    .then((res) => alert(res))
     // Faire le loading ici 
   }
 
   if (lesson){
+    console.log(lesson)
   if (lesson.isQuizz) {
     const currentQuestion = lesson.content.questions[currentIndex];
     const nbQuestion = lesson.content.questions.length -1;

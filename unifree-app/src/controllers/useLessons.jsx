@@ -24,7 +24,7 @@ const useLessons = (id) => {
             id : el.Id,
             isQuizz : false,
             title: el.Titre,
-            content: el.Description,
+            content: el.Contenu,
           };
           LessonsList.push(tmpLesson);
         });

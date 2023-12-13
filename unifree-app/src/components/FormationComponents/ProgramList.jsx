@@ -2,6 +2,7 @@
 import { Link, useParams } from "react-router-dom";
 import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
+import {SpinnerMin }from "../Spinner";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
@@ -43,7 +44,7 @@ const ProgramList = ({ formation }) => {
 
   return (
     <div className="flex flex-col w-full border rounded-[18px] border-solid border-[#C7C7C7] border-between">
-      {lessonList}
+      {lessonList? lessonList: <SpinnerMin/>}
     </div>
   );
 };
