@@ -20,7 +20,7 @@ const Lesson = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [currentScore, setCurrentScore] = useState(0);
-  const [loading,setLoading] = useState(false);
+  const [loading,setLoading] = useState(false)
 
   const lessonLink = lessonName.toLowerCase().replace(/\s+/g, "");
 
@@ -107,9 +107,11 @@ const Lesson = () => {
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
     .finally(() => {
-      refreshPage();
-      setLoading(false)})
+      refreshPage()
+      setLoading(false)
+    })
     setLoading(true)
+    // Faire le loading ici 
   }
 
   if (lesson){
@@ -178,7 +180,7 @@ const Lesson = () => {
             {
               !(Array.isArray(LessonsCompleted) && LessonsCompleted.find(Lesson => Lesson.id === lesson.id && Lesson.isQuizz === lesson.isQuizz)) ?
             <button
-              onClick={() => setRead(lesson)}
+              onClick={() =>{setRead(lesson)}}
               className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
             >
               Lu
@@ -189,9 +191,8 @@ const Lesson = () => {
         </div>
       </div>
     </div>
-    : <h1>{JSON.stringify(lesson)}</h1>} 
-    </>
-    : <Spinner/>}
+    : <h1>{JSON.stringify(lesson)}</h1>}
+    </> : <Spinner/>}
     </>
   );
 };
