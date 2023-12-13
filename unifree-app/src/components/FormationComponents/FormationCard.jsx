@@ -3,6 +3,7 @@
 import LikeImage from "/thumb_up.png";
 import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
+import useLikes from "../../controllers/UseLikes";
 
 import { Link } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ const FormationCard = ({ formation }) => {
 
   const Lessons = useLessons(formation.id)
   const quizzList = useQuizzs(formation.id)
+  const likes = useLikes(formation.id)
 
   return (
     <div className="h-full shrink-0 border rounded-[18px] border-solid border-[#C7C7C7]">
@@ -24,7 +26,7 @@ const FormationCard = ({ formation }) => {
             <p className="w-[110px] text-[#949494] text-[13px] not-italic font-normal leading-[normal]">{(quizzList.length > 0) ? quizzList.length : 0} quizz</p>
         </div>
         <div className="flex items-center">
-            <p className="w-[45px] text-[#949494] text-[10px] not-italic font-medium leading-[normal]">{formation.likeCount ? formation.likeCount : 0} likes</p>
+            <p className="w-[45px] text-[#949494] text-[10px] not-italic font-medium leading-[normal]">{(Number.isInteger(likes)) ? likes : "..."} likes</p>
             <img className="w-[14.787px] h-4 shrink-0" src={LikeImage} />
         </div>
       </div>

@@ -8,6 +8,9 @@ import Quizz from "../components/Quizz";
 import NotFound from "./NotFound";
 import useLessons from "../controllers/useLessons";
 import useQuizzs from "../controllers/useQuizzs";
+import BackRoutes from "../RoutesInterface";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
@@ -20,6 +23,7 @@ const Lesson = () => {
 
   const formation = useFormation(formationName);
 
+  const userId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null;
   if (formation.error) {
     return <NotFound />;
   }
@@ -43,13 +47,20 @@ const Lesson = () => {
   var content = "Quizz Terminé !!! ";
   console.log(lesson)
 
-  const setRead = () => {
-    const lessonList = formation[0].lesson;
-    console.log(lessonList);
-    const currentLesson = lessonList.filter(
-      (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
-    )[0];
-    currentLesson.isRead = true;
+  const setRead = async() => {
+    // const lessonList = formation[0].lesson;
+    // console.log(lessonList);
+    // const currentLesson = lessonList.filter(
+    //   (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
+    // )[0];
+    let res = await fetch(BackRoutes.CheckIsJoinedFormation+formationName,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({UserId: userId}),})
+      res = await res.json()
+    alert(JSON.stringify(res))
   }
 
   if (lesson){
