@@ -38,11 +38,9 @@ const Quizz = ({
     // Affichage des réponses
     selected.forEach((element) => {
       if (element.value == "true") {
-        console.log("treu val")
         element.classList.add("styling");
         element.classList.add("bg-green-300");
         setScore();
-        console.log(element)
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");
