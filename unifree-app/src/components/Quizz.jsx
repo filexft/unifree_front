@@ -38,11 +38,8 @@ const Quizz = ({
     // Affichage des réponses
     selected.forEach((element) => {
       if (element.value == "true") {
-        console.log("treu val")
         element.classList.add("styling");
-        element.classList.add("bg-green-300");
         setScore();
-        console.log(element)
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");
@@ -62,7 +59,7 @@ const Quizz = ({
         <p className="text-main-purple border-2 border-main-purple rounded-full py-2 px-3 mb-6 mr-auto font-semibold">
           Question {questionIndex + 1}/{length + 1}
         </p>
-        <p className="text-white bg-main-purple rounded-full py-2 px-3 mb-6 font-semibold">
+        <p className="text-white bg-main-purple rounded-full py-2 px-3 mb-6 font-semibold duration-300">
           Score : {scoreIndex}
         </p>
       </div>
