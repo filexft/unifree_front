@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import NotFound from "./NotFound";
 import BackRoutes from "../RoutesInterface";
 import { useNavigate } from "react-router";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 
 const EditFormation = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;

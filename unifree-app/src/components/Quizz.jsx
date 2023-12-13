@@ -32,7 +32,7 @@ const Quizz = ({ questionIndex, scoreIndex, length, title, responses, setScore }
       if (element.value == "true") {
         element.classList.add("bg-green-200");
         element.classList.add("styling");
-        setScore();
+        //setScore();
       } else {
         element.classList.add("bg-red-200");
         element.classList.add("styling");

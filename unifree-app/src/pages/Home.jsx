@@ -3,7 +3,7 @@ import SlideMenu from "../components/SlideMenu";
 import useFormations from "../controllers/useFormations";
 import BackRoutes from "../RoutesInterface";
 import Cookies from "js-cookie";
-import Spinner from "./Spinner";
+import Spinner from "../components/Spinner";
 
 
 const Home = () => {
