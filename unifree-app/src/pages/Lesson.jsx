@@ -11,6 +11,7 @@ import useQuizzs from "../controllers/useQuizzs";
 import BackRoutes from "../RoutesInterface";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import useCompleted from "../controllers/useCompleted";
 
 const Lesson = () => {
   const { formationName, lessonName } = useParams();
@@ -27,7 +28,6 @@ const Lesson = () => {
   if (formation.error) {
     return <NotFound />;
   }
-  
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
 
@@ -39,10 +39,15 @@ const Lesson = () => {
   let LessonsQuizz;
   LessonsQuizz = (Array.isArray(lessons) && Array.isArray(quizzs)) ? [...lessons,...quizzs] : null; 
 
-  
   const lesson = (Array.isArray(LessonsQuizz)) ? LessonsQuizz.filter(
     (lesson) => lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
   )[0] : null; 
+
+  const Completed = useCompleted(userId);
+  let LessonsCompleted = (Completed.data) ? Completed.data.map(lesson =>{
+    const result = (Object.keys(lesson).includes("LeconId")) ? lesson.LeconId : lesson.QuizzId
+    return result;
+  }) : null
 
   var content = "Quizz Terminé !!! ";
   console.log(lesson)
@@ -92,6 +97,7 @@ const Lesson = () => {
 
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
+    .finally(() => window.location.reload())
     // Faire le loading ici 
   }
 
@@ -156,12 +162,16 @@ const Lesson = () => {
               src="/lessonImage.png"
             ></img>
             <div className="p-10 whitespace-pre-line">{content}</div>
+            {
+              !LessonsCompleted.includes(lesson.id) ?
             <button
               onClick={setRead(lesson)}
               className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
             >
               Lu
             </button>
+            :null
+            }
           </div>
         </div>
       </div>

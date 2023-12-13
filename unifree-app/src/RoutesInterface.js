@@ -52,6 +52,9 @@ const BackRoutes = {
     },
     GetLikedFormations : (id) => {
         return (Url+`/Users/${id}/LikedFormations`)
+    },
+    GetCompletedContent : (id) => {
+        return (Url+`/Users/${id}/CompletedContent`)
     }
 }
 

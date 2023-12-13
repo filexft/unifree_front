@@ -2,9 +2,15 @@
 import { Link, useParams } from "react-router-dom";
 import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import useCompleted from "../../controllers/useCompleted";
 
 const ProgramList = ({ formation }) => {
   const formationLink = useParams();
+  const userid = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
+
+  const Completed = useCompleted(userid)
   // Si on est dans la page de la formation, on met le lien vers la leçon en cours en relatif sinon on met le lien en absolu
   const linkPrefix =
     formationLink.id === formation.id ? "./" : `/${formation.id}/`;
@@ -20,7 +26,10 @@ const ProgramList = ({ formation }) => {
   let LessonsQuizz;
   
   LessonsQuizz = (Array.isArray(Lessons) && Array.isArray(Quizzs)) ? [...Lessons,...Quizzs] : null; 
-
+  let LessonsCompleted = (Completed.data) ? Completed.data.map(lesson =>{
+    const result = (Object.keys(lesson).includes("LeconId")) ? lesson.LeconId : lesson.QuizzId
+    return result;
+  }) : null
   const lessonList = (LessonsQuizz) ? LessonsQuizz.map((lesson) => (
     <>
     {
@@ -33,9 +42,9 @@ const ProgramList = ({ formation }) => {
     >
       <img
         src={lesson.isQuizz ? "/quizzIcon.png" : "/lessonIcon.png"}
-        className={`w-6 h-6 mr-4 inline-block ${lesson.isRead ? 'grayscale-0' : 'grayscale'}`}
+        className={`w-6 h-6 mr-4 inline-block ${(Array.isArray(LessonsCompleted) && LessonsCompleted.includes(lesson.id))? 'grayscale-0' : 'grayscale'}`}
         />
-      {lesson.title}
+      {lesson.title}{JSON.stringify(LessonsCompleted)}
     </Link>
     : null}
     </>
