@@ -10,7 +10,7 @@ import Comment from "../Comment";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const FormationInfo = ({ formation }) => {
+const FormationInfo = ({ formation, showEditButton }) => {
   
   const Cover = "https://www.batisafe.fr/wp-content/uploads/2020/04/POST_FORMATION-EN-LIGNE.jpg";
   const quizzList = useQuizzs(formation.id);
@@ -87,6 +87,7 @@ const FormationInfo = ({ formation }) => {
 
   return (
     <div className="w-1/2 flex flex-col items-center shrink-0 rounded-[18px] border-solid">
+      <div>{showEditButton}</div>
       <img
         className="w-[555px] h-[293px] shrink-0 rounded-[14px] mt-6"
         src={Cover}
