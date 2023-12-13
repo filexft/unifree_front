@@ -19,7 +19,6 @@ const useLikedFormations = (id) => {
         if (res.Statut == 0) {
           throw new Error(res.Message);
         }
-
         res.data.forEach((el) => {
           let tmpFormation = {
             id: el.Id,

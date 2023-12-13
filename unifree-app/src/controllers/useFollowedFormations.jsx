@@ -19,11 +19,12 @@ const useFollowedFormations = (id) => {
         if (res.Statut == 0) {
           throw new Error(res.Message);
         }
+        console.log(res)
 
         res.data.forEach((el) => {
           let tmpFormation = {
-            id: el.Id,
-            title: el.Titre
+            id: el[0].Id,
+            title: el[0].Titre
           };
           FormationsList.push(tmpFormation);
         });
