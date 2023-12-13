@@ -19,7 +19,7 @@ const BackRoutes = {
     CompleteFormation : Url+"/Formations/PutIsComplete/",
     CheckIsJoinedFormation : Url+"/Formations/CheckIsJoined/",
 
-    IsReadLesson : Url+"/Lessons/PutIsRead/",
+    PutIsReadLesson : Url+"/Lessons/PutIsRead/",
     ChecIsReadLesson : Url+"/Lessons/CheckIsRead/",
 
     PutIsCompleteQuizz : Url+"/Quizz/PutIsComplete/",
