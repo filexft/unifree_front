@@ -12,8 +12,10 @@ const Formation = () => {
   const formation = useFormation(parseInt(id));
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
 
-  console.log(formation.author);
-  console.log(user.Id);
+  if (!formation) {
+    return <NotFound />;
+  }
+  
   const editButton =
     user.Id == formation.author ? (
       <div className="w-full flex align-center justify-center">
@@ -27,9 +29,6 @@ const Formation = () => {
       </div>
     ) : null;
 
-  if (!formation) {
-    return <NotFound />;
-  }
   return (
     <div className="w-full h-full flex flex-col ">
       <Header />
