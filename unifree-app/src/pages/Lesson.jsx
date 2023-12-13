@@ -33,7 +33,7 @@ const Lesson = () => {
 
 
   function handleScore() {
-    setCurrentScore(currentScore+1)
+    setCurrentScore(currentScore => currentScore+1)
   }
 
   let LessonsQuizz;
