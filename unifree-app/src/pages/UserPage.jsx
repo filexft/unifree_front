@@ -7,6 +7,9 @@ import SlideMenu from "../components/SlideMenu";
 //import getUsers from "../controllers/Users";
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode"
+import useFollowedFormations from "../controllers/useFollowedFormations";
+import useCreatedFormations from "../controllers/useCreatedFormations";
+import useLikedFormations from "../controllers/useLikedFormations";
 
 const UserPage = () => {
 
@@ -22,11 +25,19 @@ const UserPage = () => {
   if (!user) {
     return <NotFound />;
   }
+
+  const FollowedFormations = useFollowedFormations(user.Id);
+  const CreatedFormations = useCreatedFormations(user.Id);
+  const LikedFormations = useLikedFormations(user.Id);
   
   const etudiantView = (
     <>
-      {/* <SlideMenu title={"Formations suivies"} list={formationList}></SlideMenu>
-      <SlideMenu title={"Formations likées"} list={formationList}></SlideMenu> */}
+      { (Array.isArray(FollowedFormations) && Array.isArray(LikedFormations)) ?
+      <>
+      <SlideMenu title={"Formations suivies"} list={FollowedFormations}></SlideMenu>
+      <SlideMenu title={"Formations likées"} list={LikedFormations}></SlideMenu>
+      </>
+      : <p>...</p>}
     </>
   );
   const professeurView = (
@@ -39,7 +50,13 @@ const UserPage = () => {
         Créer une formation
       </Link>
       </div>
-      {/* <SlideMenu title={"Formations publiées"} list={formationList}></SlideMenu> */}
+      { (Array.isArray(FollowedFormations) && Array.isArray(LikedFormations) && Array.isArray(CreatedFormations)) ?
+      <>
+      <SlideMenu title={"Formations suivies"} list={FollowedFormations}></SlideMenu>
+      <SlideMenu title={"Formations likées"} list={LikedFormations}></SlideMenu>
+      <SlideMenu title={"Formations publiées"} list={CreatedFormations}></SlideMenu> 
+      </>
+      : <p>...</p>}
     </div>
   );
 

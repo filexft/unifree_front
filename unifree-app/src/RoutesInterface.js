@@ -45,13 +45,13 @@ const BackRoutes = {
         return (Url+`/Questions/${id}/Responses`)
     },
     GetFollowedFormations : (id) => {
-        return (Url+`/Formations/${id}/FollowedFormations`)
+        return (Url+`/Users/${id}/FollowedFormations`)
     },
     GetCreatedFormations : (id) => {
-        return (Url+`/Formations/${id}/CreatedFormations`)
+        return (Url+`/Users/${id}/CreatedFormations`)
     },
     GetLikedFormations : (id) => {
-        return (Url+`/Formations/${id}/LikedFormations`)
+        return (Url+`/Users/${id}/LikedFormations`)
     }
 }
 
