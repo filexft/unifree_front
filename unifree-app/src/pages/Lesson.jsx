@@ -24,6 +24,13 @@ const Lesson = () => {
 
   const formation = useFormation(formationName);
 
+  function refreshPage() {
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 500);
+  }
+
+
   const userId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null;
   if (formation.error) {
     return <NotFound />;
@@ -45,7 +52,7 @@ const Lesson = () => {
 
   const Completed = useCompleted(userId);
   let LessonsCompleted = (Completed.data) ? Completed.data.map(lesson =>{
-    const result = (Object.keys(lesson).includes("LeconId")) ? lesson.LeconId : lesson.QuizzId
+    const result = (Object.keys(lesson).includes("LeconId")) ? {id: lesson.LeconId,isQuizz: false}: {id: lesson.QuizzId,isQuizz: true}
     return result;
   }) : null
 
@@ -97,7 +104,7 @@ const Lesson = () => {
 
   const setRead = async(lesson) => {
     fetchLessonsStatus(lesson)
-    .finally(() => window.location.reload())
+    .finally(() => refreshPage())
     // Faire le loading ici 
   }
 
@@ -163,7 +170,7 @@ const Lesson = () => {
             ></img>
             <div className="p-10 whitespace-pre-line">{content}</div>
             {
-              !LessonsCompleted.includes(lesson.id) ?
+              !(Array.isArray(LessonsCompleted) && LessonsCompleted.find(Lesson => Lesson.id === lesson.id && Lesson.isQuizz === lesson.isQuizz)) ?
             <button
               onClick={setRead(lesson)}
               className="ml-auto mt-4 py-2 text-white px-5 border rounded-full drop-shadow bg-main-purple hover:bg-purple-800 duration-300"
