@@ -71,7 +71,7 @@ const Lesson = () => {
   var content = (
     <div className="flex flex-col items-center justify-center w-full">
       <p className="text-3xl font-bold text-main-purple animate-bounce">
-        Bravo. Quizz terminée !!!
+        Bravo. Quizz terminé !!!
       </p>
       <img src="https://media.tenor.com/HHPMFMlwwMIAAAAi/congratulations-congrats.gif" />
     </div>
