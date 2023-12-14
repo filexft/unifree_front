@@ -14,6 +14,15 @@ import useLikedFormations from "../controllers/useLikedFormations";
 const UserPage = () => {
   const navigate = useNavigate();
 
+  function removeDuplicates(arr) {
+    let unique = []
+    arr.forEach(element => {
+      if (!unique.find(Formation => Formation.id === element.id)){
+        unique.push(element)
+      }
+    })
+    return unique;
+}
   //const { id } = useParams();
   //const formationList = getFormations();
   //const userList = getUsers();
@@ -28,7 +37,10 @@ const UserPage = () => {
 
   const FollowedFormations= useFollowedFormations(user.Id);
   const CreatedFormations = useCreatedFormations(user.Id);
-  const LikedFormations= useLikedFormations(user.Id);
+  const LikedFormationsHook= useLikedFormations(user.Id);
+
+
+  const LikedFormations = (Array.isArray(LikedFormationsHook)) ? removeDuplicates(LikedFormationsHook): null
 
   const etudiantView = (
     <>
@@ -81,7 +93,7 @@ const UserPage = () => {
     </div>
   );
 
-  const View = <>{user.Role !== "STUDENT" ? etudiantView : professeurView}</>;
+  const View = <>{user.Role === "STUDENT" ? etudiantView : professeurView}</>;
   return (
     <div className="w-full h-screen flex flex-col">
       <Header />
@@ -95,7 +107,7 @@ const UserPage = () => {
             <div className="text-2xl font-semibold text-main-purple">
               {user.Nom + " " + user.Prenom}
             </div>
-            <div className="text-md">{user.Role}</div>
+            <div className="text-md">{(user.Role === "STUDENT") ? "Etudiant" : "Professeur"}</div>
             <button
               className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300"
               onClick={() => {

@@ -4,6 +4,7 @@ import useLessons from "../../controllers/useLessons";
 import useQuizzs from "../../controllers/useQuizzs";
 import useComments from "../../controllers/useComments";
 import LikeImage from "/thumb_up.png";
+import LikeImage2 from "/thumb_up_filled.png";
 import useAuthor from "../../controllers/useAuthor";
 import BackRoutes from "../../RoutesInterface";
 import Comment from "../Comment";
@@ -11,6 +12,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import useLikes from "../../controllers/UseLikes";
 import Spinner from "../Spinner";
+import useLikedFormations from "../../controllers/useLikedFormations";
 
 const FormationInfo = ({ formation, showEditButton }) => {
   
@@ -20,7 +22,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
   const Author = useAuthor(formation.author)
   console.log(Cookies.get('token'))
   const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
-  
+  const LikedFormations = useLikedFormations(UserId)
   let tmpLike = {
     Id: null,
     AuthorId: UserId,
@@ -45,10 +47,11 @@ const FormationInfo = ({ formation, showEditButton }) => {
       tmpLike.Id = result.data.Id;
     } else {
       likeBtn.src = "/thumb_up.png";
-      fetch(BackRoutes.Likes+tmpLike.Id,{method: "DELETE",
+      let result = await fetch(BackRoutes.Likes+tmpLike.Id,{method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       }})
+      console.log(result)
     }
 
   }
@@ -119,12 +122,21 @@ const FormationInfo = ({ formation, showEditButton }) => {
               
             </p>
             <button>
+              
+            {(Array.isArray(LikedFormations) && LikedFormations.find(Formation => Formation.id === formation.id)) ? 
+              <img
+                id="likeBtn"
+                onClick={toggleLike}
+                className="w-6 h-6 ml-2 shrink-0"
+                src={LikeImage2}
+              />
+              :
               <img
                 id="likeBtn"
                 onClick={toggleLike}
                 className="w-6 h-6 ml-2 shrink-0"
                 src={LikeImage}
-              />
+              />}
             </button>
           </div>
         </div>

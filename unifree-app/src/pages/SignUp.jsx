@@ -10,6 +10,7 @@ const SignUp = () => {
     Email: "",
     Password: "",
     passVerif: "",
+    Student : true,
   });
   const [inputError, setInputError] = useState(false);
 
@@ -125,9 +126,9 @@ const SignUp = () => {
             value={user.passVerif}
             required
           />
-          <div className="flex justify-between" onChange={ (e)=>{console.log(e.target.value)} }>
-            <input type="radio" value="Étudiant" name="type" defaultChecked/> Étudiant
-            <input type="radio" value="Professeur" name="type" /> Professeur
+          <div className="flex justify-between" onChange={ (e)=>{console.log(user.Student)} }>
+            <input onClick={() => setUser({...user,Student:true})} type="radio" value="Étudiant" name="type" defaultChecked/> Étudiant
+            <input onClick={() => setUser({...user,Student:false})} type="radio" value="Professeur" name="type" /> Professeur
           </div>
 
           <button
