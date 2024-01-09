@@ -12,7 +12,7 @@ import useFollowedFormations from "../controllers/useFollowedFormations";
 import useCreatedFormations from "../controllers/useCreatedFormations";
 import useLikedFormations from "../controllers/useLikedFormations";
 import { useEffect, useState } from "react";
-import { storage,Url} from "../firebase";
+import { storage, Url} from "../firebase";
 import { getDownloadURL, ref , uploadBytes} from "firebase/storage";
 import {v4} from "uuid";
 import useProfileImage from "../controllers/useProfileImage";

@@ -20,7 +20,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
   const quizzList = useQuizzs(formation.id);
   const Lessons = useLessons(formation.id);
   const Author = useAuthor(formation.author)
-  console.log(Cookies.get('token'))
+  //console.log(Cookies.get('token'))
   const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
   const LikedFormations = useLikedFormations(UserId)
   let tmpLike = {
