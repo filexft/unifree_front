@@ -14,7 +14,7 @@ const SlideMenu = ({ title, list }) => {
       <div className="w-full">
         <p className="font-medium text-xl p-5">{title}</p>
       </div>
-      <Carousel
+      <Carousel dotColorActive="#9D2CF6" 
         cols={6}
         rows={1}
         gap={10}

@@ -1,4 +1,6 @@
-
+import useFormations from '../controllers/useFormations';
+import Header from '../components/Header';
+import SearchList from '../components/SearchList';
 const Home = () => {
   const firstlist = useFormations();
   return (
@@ -12,7 +14,6 @@ const Home = () => {
     </div>
     : null}
     </>
-  );
-};
-
+  );  
+}; 
 export default Home;

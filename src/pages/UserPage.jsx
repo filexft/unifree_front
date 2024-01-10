@@ -18,6 +18,7 @@ import {v4} from "uuid";
 import useProfileImage from "../controllers/useProfileImage";
 import BackRoutes from "../RoutesInterface";
 import Loading from "../components/Loading"
+import toast from "react-hot-toast";
 
 const UserPage = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
@@ -54,8 +55,8 @@ const UserPage = () => {
       setProfileImage(url);
 
     })
-    .then(() => alert("reussi"))
-    .catch(e => alert(e))
+    .then(() => toast.success("reussi"))
+    .catch(e => toast.error(e))
     .finally(() => setLoading(false))
   }
 

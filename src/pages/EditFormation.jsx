@@ -1,5 +1,12 @@
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
+import {jwtDecode} from "jwt-decode";
+import { useState } from "react";
+import Header from "../components/Header"
+import NotFound from "./NotFound";
+import Spinner from "../components/Spinner"
+import BackRoutes from "../RoutesInterface"
+import toast from "react-hot-toast";
 
 const EditFormation = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
@@ -245,11 +252,10 @@ const EditFormation = () => {
     fetchAll()
     .then((res) => {
       
-      setLoading(false)
-      const result = res
-        ? "Formation bien publiée"
-        : "Publication de la formation echouée";
-      alert(result); 
+      if (res){
+        toast.success("Formation bien publiée")
+      }
+      else toast.error("Publication de la formation echouée")
     })
     .finally(() =>{
       
