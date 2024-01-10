@@ -13,6 +13,8 @@ import useLikes from "../../controllers/UseLikes";
 import Spinner from "../Spinner";
 import useLikedFormations from "../../controllers/useLikedFormations";
 import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 const FormationInfo = ({ formation, showEditButton }) => {
   
@@ -31,6 +33,8 @@ const FormationInfo = ({ formation, showEditButton }) => {
 
   // remplacer par le nom de l'utilisateur courant
   const user = (Author.id) ? Author.id : "User";
+
+  
   var commentsList = useComments(formation.id);
 
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
@@ -74,13 +78,13 @@ const FormationInfo = ({ formation, showEditButton }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newComment)
-    }).then(() => alert("Commentaire crée"))
-    .catch(() => alert("Commentaire non envoyé, erreur"))
-    .finally(() => refreshComments())
+    }).then(() => toast.success("Commentaire crée"))
+    .catch(() => toast.error("Commentaire non envoyé, erreur"))
+    .finally(() => setTimeout(() => refreshComments(),450))
   }
 
   function refreshComments() {
-    window.location.reload();
+    window.location.reload()
     if (Array.isArray(commentsList)){
     commentsList = commentsList.map((comment) => (
       <div key={comment.author} className="border rounded-xl p-3 mb-2">
