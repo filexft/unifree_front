@@ -144,7 +144,7 @@ const UserPage = () => {
       <input type="file" name="file" onChange={(e) => setDataImage(e.target.files[0])}/>
       <button onClick={handleImage}>submit</button>
         <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
-          { loading ? <Loading width={20} height={20}/>:
+          { loading ? <div className="w-44 h-44 object-cover rounded-full flex justify-center"><Loading width={70} height={70}/></div>:
           <img
             className="w-44 h-44 object-cover rounded-full"
             src={ProfileImage}
