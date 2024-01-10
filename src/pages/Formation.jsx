@@ -13,7 +13,7 @@ const Formation = () => {
   const formation = useFormation(parseInt(id));
   const userid = Cookies.get("token") ? jwtDecode(Cookies.get("token")).Id : null;
 
-  if (!formation) {
+  if (!formation || formation.error) {
     return <NotFound />;
   }
   

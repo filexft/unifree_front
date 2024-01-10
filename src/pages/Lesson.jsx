@@ -27,6 +27,7 @@ const Lesson = () => {
 
   const formation = useFormation(formationName);
 
+
   function refreshPage() {
     setTimeout(() => {
       window.location.reload(false);
@@ -36,11 +37,9 @@ const Lesson = () => {
   const userId = Cookies.get("token")
     ? jwtDecode(Cookies.get("token")).Id
     : null;
-  if (formation.error) {
-    return <NotFound />;
-  }
   const lessons = useLessons(formationName);
   const quizzs = useQuizzs(formationName);
+
 
   function handleScore() {
     setCurrentScore((currentScore) => currentScore + 1);
@@ -51,6 +50,8 @@ const Lesson = () => {
     Array.isArray(lessons) && Array.isArray(quizzs)
       ? [...lessons, ...quizzs]
       : null;
+    
+
 
   const lesson = Array.isArray(LessonsQuizz)
     ? LessonsQuizz.filter(
@@ -58,6 +59,10 @@ const Lesson = () => {
           lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
       )[0]
     : null;
+
+  if (!lesson){
+    return <NotFound/>  
+  }
 
   const Completed = useCompleted(userId);
   let LessonsCompleted = Completed.data
