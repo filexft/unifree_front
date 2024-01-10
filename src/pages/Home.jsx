@@ -5,8 +5,10 @@ import BackRoutes from "../RoutesInterface";
 import Cookies from "js-cookie";
 import Spinner from "../components/Spinner";
 import Footer from "../components/Footer";
+import Loading from "../components/Loading"
 
 const Home = () => {
+
   const firstlist = useFormations(); // On remplace par un hoot
   return (
     <div>
@@ -14,7 +16,6 @@ const Home = () => {
       <div className="w-screen h-screen flex flex-col overflow-x-hidden">
       <Header />
       <div>
-      
         <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
         <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
         <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu>

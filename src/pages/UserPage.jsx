@@ -17,6 +17,7 @@ import { getDownloadURL, ref , uploadBytes} from "firebase/storage";
 import {v4} from "uuid";
 import useProfileImage from "../controllers/useProfileImage";
 import BackRoutes from "../RoutesInterface";
+import Loading from "../components/Loading"
 
 const UserPage = () => {
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
@@ -134,7 +135,6 @@ const UserPage = () => {
   const View = <>{user.Role === "STUDENT" ? etudiantView : professeurView}</>;
   return (
     <>
-    { loading ? <Spinner/> :
     <div className="w-full h-screen flex flex-col">
       
       <Header />
@@ -143,12 +143,13 @@ const UserPage = () => {
       <input type="file" name="file" onChange={(e) => setDataImage(e.target.files[0])}/>
       <button onClick={handleImage}>submit</button>
         <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
+          { loading ? <Loading width={20} height={20}/>:
           <img
             className="w-44 h-44 object-cover rounded-full"
             src={ProfileImage}
             alt="Profile Image"
           ></img>
-          
+          }
           <div className="flex flex-col gap-7 justify-center">
             <div className="text-2xl font-semibold text-main-purple">
               {user.Nom + " " + user.Prenom}
@@ -170,7 +171,6 @@ const UserPage = () => {
       
       <Footer></Footer>
     </div>
-  }
     </>
   );
 };
