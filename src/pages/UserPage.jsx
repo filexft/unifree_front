@@ -55,7 +55,7 @@ const UserPage = () => {
       setProfileImage(url);
 
     })
-    .then(() => toast.success("reussi"))
+    .then(() => toast.success("Réussi"))
     .catch(e => toast.error(e))
     .finally(() => setLoading(false))
   }

@@ -25,7 +25,7 @@ const FormationCard = ({ formation }) => {
           <p className="w-[220.874px] text-black text-base not-italic font-medium leading-[normal]">
             {formation.title}
           </p>
-          <p className=" text-white inline-block bg-cyan-300 rounded text-sm px-2 not-italic font-medium leading-[normal]">
+          <p className=" text-white inline-block bg-[#a21caf] rounded text-sm px-2 not-italic font-medium leading-[normal]">
             {formation.categorie}
           </p>
           <div className="flex flex-row justify-between p-2">
