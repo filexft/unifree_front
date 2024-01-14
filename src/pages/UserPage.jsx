@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import NotFound from "./NotFound";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Spinner from "../components/Spinner"
+import Spinner from "../components/Spinner";
 import SlideMenu from "../components/SlideMenu";
 //import getFormations from "../controllers/Formations";
 //import getUsers from "../controllers/Users";
@@ -12,12 +12,12 @@ import useFollowedFormations from "../controllers/useFollowedFormations";
 import useCreatedFormations from "../controllers/useCreatedFormations";
 import useLikedFormations from "../controllers/useLikedFormations";
 import { useEffect, useState } from "react";
-import { storage,Url} from "../firebase";
-import { getDownloadURL, ref , uploadBytes} from "firebase/storage";
-import {v4} from "uuid";
+import { storage, Url } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 import useProfileImage from "../controllers/useProfileImage";
 import BackRoutes from "../RoutesInterface";
-import Loading from "../components/Loading"
+import Loading from "../components/Loading";
 import toast from "react-hot-toast";
 
 const UserPage = () => {
@@ -26,61 +26,63 @@ const UserPage = () => {
     return <NotFound />;
   }
   const navigate = useNavigate();
-  const [loading,setLoading] = useState(false);
-  const [DataImage,setDataImage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [DataImage, setDataImage] = useState();
   const CurrentProfile = useProfileImage(user.Id);
-  const [ProfileImage,setProfileImage] = useState(CurrentProfile)
+  const [ProfileImage, setProfileImage] = useState(CurrentProfile);
 
   useEffect(() => {
-    setProfileImage(CurrentProfile)
-  },[CurrentProfile])
+    setProfileImage(CurrentProfile);
+  }, [CurrentProfile]);
 
-  const handleImage = async() => {
+  const handleImage = async () => {
     setLoading(true);
-    if (!DataImage && (ProfileImage instanceof String)) return;
-    const imageRef = ref(storage,`images/${DataImage.name + v4()}`);
-    uploadBytes(imageRef,DataImage).then(async() => {
-      const url = await getDownloadURL(imageRef);
-      // Ajouter le fetch
-      let res = await fetch(BackRoutes.SpecificUser+user.Id,{
-        method:"PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body:JSON.stringify({ProfileImage: url})})
-      res = await res.json();
-      if (res.Statut == 0){
-        throw new Error("Requete echouée")
-      }
-      setProfileImage(url);
-
-    })
-    .then(() => toast.success("Réussi"))
-    .catch(e => toast.error(e))
-    .finally(() => setLoading(false))
-  }
+    if (!DataImage && ProfileImage instanceof String) return;
+    const imageRef = ref(storage, `images/${DataImage.name + v4()}`);
+    uploadBytes(imageRef, DataImage)
+      .then(async () => {
+        const url = await getDownloadURL(imageRef);
+        // Ajouter le fetch
+        let res = await fetch(BackRoutes.SpecificUser + user.Id, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ProfileImage: url }),
+        });
+        res = await res.json();
+        if (res.Statut == 0) {
+          throw new Error("Requete echouée");
+        }
+        setProfileImage(url);
+      })
+      .then(() => toast.success("Réussi"))
+      .catch((e) => toast.error(e))
+      .finally(() => setLoading(false));
+    setDataImage();
+  };
 
   function removeDuplicates(arr) {
-    let unique = []
-    arr.forEach(element => {
-      if (!unique.find(Formation => Formation.id === element.id)){
-        unique.push(element)
+    let unique = [];
+    arr.forEach((element) => {
+      if (!unique.find((Formation) => Formation.id === element.id)) {
+        unique.push(element);
       }
-    })
+    });
     return unique;
-}
+  }
   //const { id } = useParams();
   //const formationList = getFormations();
   //const userList = getUsers();
   // Recuperation des formations des Users
-  
 
-  const FollowedFormations= useFollowedFormations(user.Id);
+  const FollowedFormations = useFollowedFormations(user.Id);
   const CreatedFormations = useCreatedFormations(user.Id);
-  const LikedFormationsHook= useLikedFormations(user.Id);
+  const LikedFormationsHook = useLikedFormations(user.Id);
 
-
-  const LikedFormations = (Array.isArray(LikedFormationsHook)) ? removeDuplicates(LikedFormationsHook): null
+  const LikedFormations = Array.isArray(LikedFormationsHook)
+    ? removeDuplicates(LikedFormationsHook)
+    : null;
 
   const etudiantView = (
     <>
@@ -100,6 +102,34 @@ const UserPage = () => {
       )}
     </>
   );
+
+  const loadImageButton = (
+    <>
+      <label
+        htmlFor="input-button"
+        className="flex flex-row border border-black rounded-lg px-3 py-1 gap-2 font-medium"
+      >
+        <img src={"/download-icon.svg"} alt="Download Icon"></img>
+        <span>Changer de photo de profil </span>
+      </label>
+      <input
+        id="input-button"
+        type="file"
+        name="file"
+        className="hidden"
+        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .svg , .tiff|image/*"
+        onChange={(e) => setDataImage(e.target.files[0])}
+      />
+    </>
+  );
+
+  const confirmImageChangeButton = (
+    <div className="flex flex-row border border-white bg-green-500 text-white rounded-lg px-3 py-1 gap-2 font-medium">
+      <img src={"/check-icon.svg"} alt="Check Icon" className=" invert"></img>
+      <button onClick={handleImage}>Confirmer le changement</button>
+    </div>
+  );
+
   const professeurView = (
     <div className="flex flex-col ">
       <div className="pl-5 mt-5">
@@ -136,42 +166,47 @@ const UserPage = () => {
   const View = <>{user.Role === "STUDENT" ? etudiantView : professeurView}</>;
   return (
     <>
-    <div className="w-full h-screen flex flex-col">
-      
-      <Header />
-      <div className="p-5">
-        
-      <input type="file" name="file" onChange={(e) => setDataImage(e.target.files[0])}/>
-      <button onClick={handleImage}>submit</button>
-        <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
-          { loading ? <div className="w-44 h-44 object-cover rounded-full flex justify-center"><Loading width={70} height={70}/></div>:
-          <img
-            className="w-44 h-44 object-cover rounded-full"
-            src={ProfileImage}
-            alt="Profile Image"
-          ></img>
-          }
-          <div className="flex flex-col gap-7 justify-center">
-            <div className="text-2xl font-semibold text-main-purple">
-              {user.Nom + " " + user.Prenom}
+      <div className="w-full h-screen flex flex-col">
+        <Header />
+        <div className="p-5">
+          <div className="inline-block">
+            {!DataImage ? loadImageButton : confirmImageChangeButton}
+          </div>
+          <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
+            {loading ? (
+              <div className="w-44 h-44 object-cover rounded-full flex justify-center">
+                <Loading width={70} height={70} />
+              </div>
+            ) : (
+              <img
+                className="w-44 h-44 object-cover rounded-full"
+                src={ProfileImage}
+                alt="Profile Image"
+              ></img>
+            )}
+            <div className="flex flex-col gap-7 justify-center">
+              <div className="text-2xl font-semibold text-main-purple">
+                {user.Nom + " " + user.Prenom}
+              </div>
+              <div className="text-md">
+                {user.Role === "STUDENT" ? "Etudiant" : "Professeur"}
+              </div>
+              <button
+                className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300"
+                onClick={() => {
+                  Cookies.remove("token");
+                  navigate("/login");
+                }}
+              >
+                Se déconnecter
+              </button>
             </div>
-            <div className="text-md">{(user.Role === "STUDENT") ? "Etudiant" : "Professeur"}</div>
-            <button
-              className="flex items-center px-6 py-2 border-2 border-red-600 font-semibold text-red-600 rounded-[18px] hover:bg-red-600 hover:text-white duration-300"
-              onClick={() => {
-                Cookies.remove("token");
-                navigate("/login");
-              }}
-            >
-              Se déconnecter
-            </button>
           </div>
         </div>
+        {View}
+
+        <Footer></Footer>
       </div>
-      {View}
-      
-      <Footer></Footer>
-    </div>
     </>
   );
 };
