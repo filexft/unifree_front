@@ -172,7 +172,7 @@ const UserPage = () => {
           <div className="inline-block">
             {!DataImage ? loadImageButton : confirmImageChangeButton}
           </div>
-          <div className="flex flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
+          <div className="flex flex-col items-center text-center md:text-left md:flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
             {loading ? (
               <div className="w-44 h-44 object-cover rounded-full flex justify-center">
                 <Loading width={70} height={70} />
