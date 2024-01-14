@@ -107,10 +107,13 @@ const UserPage = () => {
     <>
       <label
         htmlFor="input-button"
-        className="flex flex-row border border-black rounded-lg px-3 py-1 gap-2 font-medium"
+        className="flex flex-row border bg-white hover:bg-gray-200 rounded-full px-2 py-2 font-medium cursor-pointer"
       >
-        <img src={"/download-icon.svg"} alt="Download Icon"></img>
-        <span>Changer de photo de profil </span>
+        <img
+          className="opacity-50"
+          src={"/edit-image-icon.svg"}
+          alt="Edit Image Icon"
+        ></img>
       </label>
       <input
         id="input-button"
@@ -169,20 +172,22 @@ const UserPage = () => {
       <div className="w-full h-screen flex flex-col">
         <Header />
         <div className="p-5">
-          <div className="inline-block">
-            {!DataImage ? loadImageButton : confirmImageChangeButton}
-          </div>
           <div className="flex flex-col items-center text-center md:text-left md:flex-row border rounded-[18px] border-solid border-[#C7C7C7] p-16 gap-8">
             {loading ? (
               <div className="w-44 h-44 object-cover rounded-full flex justify-center">
                 <Loading width={70} height={70} />
               </div>
             ) : (
-              <img
-                className="w-44 h-44 object-cover rounded-full"
-                src={ProfileImage}
-                alt="Profile Image"
-              ></img>
+              <div className="relative">
+                <div className="inline-block absolute top-0 right-0">
+                  {!DataImage ? loadImageButton : confirmImageChangeButton}
+                </div>
+                <img
+                  className="w-44 h-44 object-cover rounded-full"
+                  src={ProfileImage}
+                  alt="Profile Image"
+                ></img>
+              </div>
             )}
             <div className="flex flex-col gap-7 justify-center">
               <div className="text-2xl font-semibold text-main-purple">
