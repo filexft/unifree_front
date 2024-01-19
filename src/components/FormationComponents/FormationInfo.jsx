@@ -97,7 +97,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
 
   return (
     <div className="w-full md:w-1/2 flex flex-col items-center shrink-0 rounded-[18px] border-solid">
-      <div>{showEditButton}</div>
+      <div>{showEditButton(formation.id)}</div>
       <img
         className="md:w-[555px] md:h-[293px] shrink-0 rounded-[14px] mt-6"
         src={Cover}

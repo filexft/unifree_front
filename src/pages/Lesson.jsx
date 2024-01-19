@@ -60,9 +60,6 @@ const Lesson = () => {
       )[0]
     : null;
 
-  if (!lesson){
-    return <NotFound/>  
-  }
 
   const Completed = useCompleted(userId);
   let LessonsCompleted = Completed.data

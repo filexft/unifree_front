@@ -1,29 +1,43 @@
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router";
-import {jwtDecode} from "jwt-decode";
-import { useState } from "react";
-import Header from "../components/Header"
+import { useNavigate, useParams } from "react-router";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
 import NotFound from "./NotFound";
-import Spinner from "../components/Spinner"
-import BackRoutes from "../RoutesInterface"
+import Spinner from "../components/Spinner";
+import BackRoutes from "../RoutesInterface";
 import toast from "react-hot-toast";
+import useFormation from "../controllers/useFormation";
+import useLessons from "../controllers/useLessons";
+import useQuizzs from "../controllers/useQuizzs";
 
-const EditFormation = () => {
+const EditFormation = ({ Existing }) => {
+  const { id } = Existing ? useParams() : { id: "" };
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
   const Navigate = useNavigate();
-  if (!user) {
+
+  const Formation = useFormation(id);
+  const Lessons = useLessons(id);
+  const quizzs = useQuizzs(id);
+
+  // Ids des trucs à delete
+  
+  const LessonsQuizz =
+    Array.isArray(Lessons) && Array.isArray(quizzs)
+      ? [...Lessons, ...quizzs]
+      : null;
+
+  if (!user && Formation.error) {
     return <NotFound />;
   }
   const Id = user.Id;
 
   let FormationId;
-  let QuizzId;
-  let questionId;
 
-  //loading 
-  
+  //loading
+
   const [loading, setLoading] = useState(false);
-
+  const [init, setInit] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [lessons, setLessons] = useState([
@@ -33,6 +47,17 @@ const EditFormation = () => {
       content: "",
     },
   ]);
+
+  useEffect(() => {
+    if (!Formation.error && !Formation.loading) {
+      setTitle(Formation.title);
+    }
+    if (Array.isArray(LessonsQuizz) && !init) {
+      setLessons(LessonsQuizz);
+      setInit(true);
+    }
+  }, [LessonsQuizz, Formation]);
+
   const handleLessonTitleChange = (index, value) => {
     const updatedLessons = [...lessons];
     updatedLessons[index].title = value;
@@ -151,125 +176,50 @@ const EditFormation = () => {
     });
     setLessons(updatedLessons);
   };
+  
   const fetchAll = async () => {
-    let result = true;
-    // Ajouter la récupération de l'id du prof + ajouter la formation dans la base de données ici
-
-    // Un Fetch pour ajouter la formation Creation Objet into envoi
-
-    let tmpFormation = {
-      Titre: title,
-      AuthorId: Id,
-      Categorie : category
-    };
-    let res = await fetch(BackRoutes.Formations, {
+    const Body = {
+      Categorie : category,
+      AuthorId : user.Id,
+      Titre : title,
+      Lessons:lessons 
+    }
+    console.log(lessons)
+    let res = await fetch(BackRoutes.Formations,{
       method: "POST",
-      headers: {
+      headers:{
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(tmpFormation),
+      body:JSON.stringify(Body)   
     })
-    res = await res.json();
-    if (res.Statut != 200) result = false;
-    FormationId = res.data.Id;
+    res = await res.json()
+    return res;   
+  }
 
-    if (FormationId) {
-      for (let i = 0; i < lessons.length; i++) {
-        if (!lessons[i].isQuizz) {
-          // On fetch toutes les lessons classiques
-          let tmpLesson = {
-            FormationId: FormationId,
-            Titre: lessons[i].title,
-            Contenu: lessons[i].content,
-          };
-          let resLesson = await fetch(BackRoutes.Lessons, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(tmpLesson),
-          })
-          resLesson = await resLesson.json()
-          if (resLesson.Statut != 200) result = false;
-        } else {
-          // Faire une double boucle pour créer un objet opti
-          let tmpQuizz = {
-            FormationId: FormationId,
-            Titre : lessons[i].title,
-            Description : "DefaultDescription"
-          }
-          let resQuizz = await fetch(BackRoutes.Quizz,{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(tmpQuizz),})
-          resQuizz = await resQuizz.json();
-          if (resQuizz.Statut == 0) result = false;
-          const questions = (result) ? lessons[i].content.questions : [];
+  // Faire la fonction putAll
 
-          for(let j = 0;j<questions.length;j++){
-            let tmpQuestion ={
-              QuizzId: resQuizz.data.Id,
-              Enonce : questions[j].title
-            }
-            let resQuestion = await fetch(BackRoutes.Qestions,{
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(tmpQuestion)})
-            resQuestion = await resQuestion.json();
-            
-            if (resQuestion.Statut != 200) result = false;
-            let answers = (result) ? questions[j].answers : [];
-            for(let k = 0;k<answers.length;k++){
-              console.log(answers[k])
-              let tmpAnswer = {
-                QuestionId: resQuestion.data.Id,
-                Right : answers[k].isCorrect,
-                Contenu : answers[k].title
-              }
-              let resAnswer = await fetch(BackRoutes.Responses,{
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(tmpAnswer)})
-                resAnswer = await resAnswer.json();
-                if (resAnswer.Statut != 200) result = false;
-            }
-          }
-
-        }
-      }
-    }
-    return result;
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setLoading(true);
     fetchAll()
-    .then((res) => {
-      
-      if (res){
-        toast.success("Formation bien publiée")
-      }
-      else toast.error("Publication de la formation echouée")
-    })
-    .finally(() =>{
-      
-      setLoading(false)
-      Navigate(`/u/${Id}`)
-    });
+      .then((res) => {
+        if (res) {
+          toast.success(
+            Existing ? "Formation bien modifiée" : "Formation bien publiée"
+          );
+        } else toast.error("Publication de la formation echouée");
+      })
+      .finally(() => {  
+        setLoading(false);
+        Navigate(`/u/${Id}`);
+      });
   };
 
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
-      {
-        loading? <Spinner /> :''
-      }
+      {loading ? <Spinner /> : ""}
       <div className="p-5">
         <div className="text-main-purple text-xl font-bold">
           Créer une formation

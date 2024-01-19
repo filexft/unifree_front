@@ -17,18 +17,23 @@ const Formation = () => {
     return <NotFound />;
   }
   
-  const editButton =
-    userid == formation.author ? (
+  const editButton = (FormationId) => {
+    return (
+      <>
+    {userid == formation.author ?
       <div className="w-full flex align-center justify-center">
         <Link
-          to="/edit-formation"
+          to={`/edit-formation/${FormationId}`}
           className="mt-6 flex flex-row border-2 border-gray-400 text-gray-600 py-2 px-4 rounded-full gap-3 font-semibold hover:bg-gray-200 duration-300"
         >
           <p>Modifier la formation</p>{" "}
           <img className="w-6 " src="/edit-button.png" />
         </Link>
       </div>
-    ) : null;
+     : null}
+    </>
+    )
+  }
 
   return (
     <div className="w-full h-full flex flex-col ">
