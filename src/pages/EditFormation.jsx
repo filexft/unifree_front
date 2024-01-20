@@ -13,9 +13,11 @@ import useQuizzs from "../controllers/useQuizzs";
 
 const EditFormation = ({ Existing }) => {
   const { id } = Existing ? useParams() : { id: "" };
+  
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
   const Navigate = useNavigate();
 
+  const [Error,setError] = useState(false)
   const Formation = useFormation(id);
   const Lessons = useLessons(id);
   const quizzs = useQuizzs(id);
@@ -27,10 +29,8 @@ const EditFormation = ({ Existing }) => {
       ? [...Lessons, ...quizzs]
       : null;
 
-  if (!user && Formation.error) {
-    return <NotFound />;
-  }
-  const Id = user.Id;
+  
+  const Id = (user) ? user.Id : null;
 
   let FormationId;
 
@@ -38,6 +38,7 @@ const EditFormation = ({ Existing }) => {
 
   const [loading, setLoading] = useState(false);
   const [init, setInit] = useState(false);
+  const [initTitle,setInitTitle] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [lessons, setLessons] = useState([
@@ -49,8 +50,15 @@ const EditFormation = ({ Existing }) => {
   ]);
 
   useEffect(() => {
-    if (!Formation.error && !Formation.loading) {
+    if (Formation.error) {
+      setError(true)
+    }
+    if (!user){
+      setError(true)
+    }
+    if (!Formation.error && !Formation.loading && !initTitle) {
       setTitle(Formation.title);
+      setInitTitle(true);
     }
     if (Array.isArray(LessonsQuizz) && !init) {
       setLessons(LessonsQuizz);
@@ -178,21 +186,33 @@ const EditFormation = ({ Existing }) => {
   };
   
   const fetchAll = async () => {
-    const Body = {
+    const method = Existing ? 'PUT' : 'POST';
+    const FormationId  = Existing ? id : ""
+    const Body = Existing ? 
+    {
+      Categorie : category,
+      AuthorId : user.Id,
+      Titre : title,  
+      Lessons: lessons,
+      oldLessons : LessonsQuizz
+    }
+    :
+    {
       Categorie : category,
       AuthorId : user.Id,
       Titre : title,
       Lessons:lessons 
     }
-    console.log(lessons)
-    let res = await fetch(BackRoutes.Formations,{
-      method: "POST",
+    console.log(Body)
+    let res = await fetch(BackRoutes.Formations+FormationId,{
+      method: method,
       headers:{
         "Content-Type": "application/json",
       },
       body:JSON.stringify(Body)   
     })
     res = await res.json()
+    console.log(res)
     return res;   
   }
 
@@ -208,13 +228,17 @@ const EditFormation = ({ Existing }) => {
           toast.success(
             Existing ? "Formation bien modifiée" : "Formation bien publiée"
           );
-        } else toast.error("Publication de la formation echouée");
+        } else toast.error( Existing ? "Modification de la formation echouée" :"Publication de la formation echouée");
       })
       .finally(() => {  
         setLoading(false);
         Navigate(`/u/${Id}`);
       });
   };
+
+  if (Error){
+    return <NotFound/>
+  }
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -438,7 +462,7 @@ const EditFormation = ({ Existing }) => {
             type="submit"
             onClick={handleSubmit}
           >
-            Publier la formation
+           { Existing ? "Modifier la formation" : "Publier la formation"}
           </button>
         </div>
       </div>
