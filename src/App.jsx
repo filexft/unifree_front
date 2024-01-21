@@ -25,7 +25,7 @@ function App() {
         <Route path="/:id" element={<Formation />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> 
   );
 }
 

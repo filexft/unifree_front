@@ -38,7 +38,7 @@ const Lesson = () => {
     ? jwtDecode(Cookies.get("token")).Id
     : null;
   const lessons = useLessons(formationName);
-  const quizzs = useQuizzs(formationName);
+  const quizzs = useQuizzs(formationName);  
 
 
   function handleScore() {
@@ -135,7 +135,6 @@ const Lesson = () => {
       setLoading(false);
     });
     setLoading(true);
-    // Faire le loading ici
   };
 
   if (lesson) {
@@ -215,14 +214,14 @@ const Lesson = () => {
                       >
                         Lu
                       </button>
-                    ) : null}
+                    ) : <Spinner/>  }
                   </div>
                 </div>
               </div>
               <Footer></Footer>
             </div>
           ) : (
-            <h1>{JSON.stringify(lesson)}</h1>
+            <h1><Spinner/></h1>
           )}
         </>
       ) : (

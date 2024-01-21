@@ -7,6 +7,7 @@ import NotFound from "./NotFound";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import Footer from "../components/Footer";
+import Spinner from "../components/Spinner";
 
 const Formation = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const Formation = () => {
           <img className="w-6 " src="/edit-button.png" />
         </Link>
       </div>
-     : null}
+     : null }
     </>
     )
   }
