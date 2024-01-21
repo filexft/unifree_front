@@ -25,11 +25,8 @@ const FormationInfo = ({ formation, showEditButton }) => {
   console.log(Cookies.get('token'))
   const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
   const LikedFormations = useLikedFormations(UserId)
-  let tmpLike = {
-    Id: null,
-    AuthorId: UserId,
-    FormationId: formation.id
-  }
+  const [tmpLike,setTmpLike]= useState(null)
+  const [canLike,setCanLike] = useState(true)
 
   // remplacer par le nom de l'utilisateur courant
   const user = (Author.id) ? Author.id : "User";
@@ -40,22 +37,39 @@ const FormationInfo = ({ formation, showEditButton }) => {
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
   const toggleLike = async() => {
     const likeBtn = document.getElementById("likeBtn");
-    if (likeBtn.src.includes("thumb_up.png")) {
+    if (canLike) {
+      
       likeBtn.src = "/thumb_up_filled.png";
+      const tmpLike= {
+        FormationId: formation.id,
+        AuthorId: UserId
+      }
       let result = await fetch(BackRoutes.Likes,{method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(tmpLike)})
       result = await result.json();
-      tmpLike.Id = result.data.Id;
+      if (result.data.Statut !== 0){
+        setTmpLike(result.data.Id);
+        setCanLike(false)
+      }
+      else{ toast.error("Like echoué")
+      likeBtn.src = "/thumb_up.png";
+      setCanLike(true)}
     } else {
       likeBtn.src = "/thumb_up.png";
-      let result = await fetch(BackRoutes.Likes+tmpLike.Id,{method: "DELETE",
+      console.log(tmpLike)
+      let result = await fetch(BackRoutes.Likes+tmpLike,{method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       }})
-      console.log(result)
+      result = await result.json()
+      if (result.data.Statut === 0){
+         toast.error("Like echoué")
+      likeBtn.src = "/thumb_up_filled.png";
+      setCanLike(false)}
+      else {setCanLike(true)}
     }
 
   }
