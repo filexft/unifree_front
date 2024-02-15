@@ -13,6 +13,8 @@ import useLikes from "../../controllers/UseLikes";
 import Spinner from "../Spinner";
 import useLikedFormations from "../../controllers/useLikedFormations";
 import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 const FormationInfo = ({ formation, showEditButton }) => {
   
@@ -23,35 +25,51 @@ const FormationInfo = ({ formation, showEditButton }) => {
   //console.log(Cookies.get('token'))
   const UserId = (Cookies.get('token')) ? jwtDecode(Cookies.get('token')).Id : null
   const LikedFormations = useLikedFormations(UserId)
-  let tmpLike = {
-    Id: null,
-    AuthorId: UserId,
-    FormationId: formation.id
-  }
+  const [tmpLike,setTmpLike]= useState(null)
+  const [canLike,setCanLike] = useState(true)
 
   // remplacer par le nom de l'utilisateur courant
   const user = (Author.id) ? Author.id : "User";
+
+  
   var commentsList = useComments(formation.id);
 
   // TODO: AJOUTER A LA LISTE DES FORMATIONS LIKED
   const toggleLike = async() => {
     const likeBtn = document.getElementById("likeBtn");
-    if (likeBtn.src.includes("thumb_up.png")) {
+    if (canLike) {
+      
       likeBtn.src = "/thumb_up_filled.png";
+      const tmpLike= {
+        FormationId: formation.id,
+        AuthorId: UserId
+      }
       let result = await fetch(BackRoutes.Likes,{method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(tmpLike)})
       result = await result.json();
-      tmpLike.Id = result.data.Id;
+      if (result.data.Statut !== 0){
+        setTmpLike(result.data.Id);
+        setCanLike(false)
+      }
+      else{ toast.error("Like echoué")
+      likeBtn.src = "/thumb_up.png";
+      setCanLike(true)}
     } else {
       likeBtn.src = "/thumb_up.png";
-      let result = await fetch(BackRoutes.Likes+tmpLike.Id,{method: "DELETE",
+      console.log(tmpLike)
+      let result = await fetch(BackRoutes.Likes+tmpLike,{method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       }})
-      console.log(result)
+      result = await result.json()
+      if (result.data.Statut === 0){
+         toast.error("Like echoué")
+      likeBtn.src = "/thumb_up_filled.png";
+      setCanLike(false)}
+      else {setCanLike(true)}
     }
 
   }
@@ -74,13 +92,13 @@ const FormationInfo = ({ formation, showEditButton }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newComment)
-    }).then(() => alert("Commentaire crée"))
-    .catch(() => alert("Commentaire non envoyé, erreur"))
-    .finally(() => refreshComments())
+    }).then(() => toast.success("Commentaire crée"))
+    .catch(() => toast.error("Commentaire non envoyé, erreur"))
+    .finally(() => setTimeout(() => refreshComments(),450))
   }
 
   function refreshComments() {
-    window.location.reload();
+    window.location.reload()
     if (Array.isArray(commentsList)){
     commentsList = commentsList.map((comment) => (
       <div key={comment.author} className="border rounded-xl p-3 mb-2">
@@ -93,7 +111,7 @@ const FormationInfo = ({ formation, showEditButton }) => {
 
   return (
     <div className="w-full md:w-1/2 flex flex-col items-center shrink-0 rounded-[18px] border-solid">
-      <div>{showEditButton}</div>
+      <div>{showEditButton(formation.id)}</div>
       <img
         className="md:w-[555px] md:h-[293px] shrink-0 rounded-[14px] mt-6"
         src={Cover}

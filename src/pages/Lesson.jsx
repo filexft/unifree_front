@@ -27,6 +27,7 @@ const Lesson = () => {
 
   const formation = useFormation(formationName);
 
+
   function refreshPage() {
     setTimeout(() => {
       window.location.reload(false);
@@ -36,11 +37,9 @@ const Lesson = () => {
   const userId = Cookies.get("token")
     ? jwtDecode(Cookies.get("token")).Id
     : null;
-  if (formation.error) {
-    return <NotFound />;
-  }
   const lessons = useLessons(formationName);
-  const quizzs = useQuizzs(formationName);
+  const quizzs = useQuizzs(formationName);  
+
 
   function handleScore() {
     setCurrentScore((currentScore) => currentScore + 1);
@@ -51,6 +50,8 @@ const Lesson = () => {
     Array.isArray(lessons) && Array.isArray(quizzs)
       ? [...lessons, ...quizzs]
       : null;
+    
+
 
   const lesson = Array.isArray(LessonsQuizz)
     ? LessonsQuizz.filter(
@@ -58,6 +59,7 @@ const Lesson = () => {
           lesson.title.toLowerCase().replace(/\s+/g, "") === lessonLink
       )[0]
     : null;
+
 
   const Completed = useCompleted(userId);
   let LessonsCompleted = Completed.data
@@ -133,7 +135,6 @@ const Lesson = () => {
       setLoading(false);
     });
     setLoading(true);
-    // Faire le loading ici
   };
 
   if (lesson) {
@@ -213,14 +214,14 @@ const Lesson = () => {
                       >
                         Lu
                       </button>
-                    ) : null}
+                    ) : <Spinner/>  }
                   </div>
                 </div>
               </div>
               <Footer></Footer>
             </div>
           ) : (
-            <h1>{JSON.stringify(lesson)}</h1>
+            <h1><Spinner/></h1>
           )}
         </>
       ) : (

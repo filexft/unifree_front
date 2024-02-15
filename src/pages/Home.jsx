@@ -1,13 +1,10 @@
 import Header from "../components/Header";
 import SlideMenu from "../components/SlideMenu";
 import useFormations from "../controllers/useFormations";
-import BackRoutes from "../RoutesInterface";
-import Cookies from "js-cookie";
 import Spinner from "../components/Spinner";
 import Footer from "../components/Footer";
 
 const Home = () => {
-  
   const firstlist = useFormations(); // On remplace par un hoot
   console.log(Array.isArray(firstlist))
   //id: 1, title: 'Formation test', categorie: 'Test'
@@ -52,8 +49,11 @@ const Home = () => {
               <SlideMenu title={"De la catégorie " + firstlist.find(item => item.categorie.toLowerCase() == categories[2][0]).categorie} list={ firstlist.filter(item => item.categorie.toLowerCase() === categories[2][0]) }></SlideMenu>
             ): null
         }
-        {/* <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
+
         <SlideMenu title={"Formations les plus suivies"} list={ firstlist }></SlideMenu>
+
+        {/* <SlideMenu title={"De la catégorie informatique"} list={ firstlist }></SlideMenu>
+        
         <SlideMenu title={"Qui pourrait vous plaire"} list={ firstlist }></SlideMenu> */}
        
         </div>

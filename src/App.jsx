@@ -17,6 +17,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/edit-formation" element={<EditFormation />} />
+        <Route path="/edit-formation/:id" element={<EditFormation Existing={true} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="search/:search" element={<Search />} />
         <Route path="/u/:id" element={<UserPage />} />
@@ -24,7 +25,7 @@ function App() {
         <Route path="/:id" element={<Formation />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> 
   );
 }
 

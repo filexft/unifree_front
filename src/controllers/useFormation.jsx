@@ -5,7 +5,7 @@ const useFormation = (id) => {
   const [Formation, setFormation] = useState({
     loading: true,
   });
-
+  
   useEffect(() => {
     fetch(BackRoutes.Formations+id)
       .then(async (res) => {
@@ -27,6 +27,7 @@ const useFormation = (id) => {
       .then(res => setFormation(res))
       .catch((err) => setFormation({ error: true, ErrorContent: err }));
   }, [id]);
+  
   return Formation;
 };
 

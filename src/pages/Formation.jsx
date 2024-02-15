@@ -7,28 +7,43 @@ import NotFound from "./NotFound";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import Footer from "../components/Footer";
+import Spinner from "../components/Spinner";
+import { useState } from "react";
+import useProfileImage from "../controllers/useProfileImage";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import BackRoutes from "../RoutesInterface";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
+import { storage } from "../firebase";
 
 const Formation = () => {
   const { id } = useParams();
   const formation = useFormation(parseInt(id));
   const userid = Cookies.get("token") ? jwtDecode(Cookies.get("token")).Id : null;
 
-  if (!formation) {
+  if (!formation || formation.error) {
     return <NotFound />;
   }
-  
-  const editButton =
-    userid == formation.author ? (
+
+ 
+  const editButton = (FormationId) => {
+    return (
+      <>
+    {userid == formation.author ?
       <div className="w-full flex align-center justify-center">
         <Link
-          to="/edit-formation"
+          to={`/edit-formation/${FormationId}`}
           className="mt-6 flex flex-row border-2 border-gray-400 text-gray-600 py-2 px-4 rounded-full gap-3 font-semibold hover:bg-gray-200 duration-300"
         >
           <p>Modifier la formation</p>{" "}
           <img className="w-6 " src="/edit-button.png" />
         </Link>
       </div>
-    ) : null;
+     : null }
+    </>
+    )
+  }
 
   return (
     <div className="w-full h-full flex flex-col ">

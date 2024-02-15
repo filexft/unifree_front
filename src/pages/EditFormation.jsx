@@ -1,28 +1,49 @@
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router";
-import {jwtDecode} from "jwt-decode";
-import { useState } from "react";
-import Header from "../components/Header"
+import { useNavigate, useParams } from "react-router";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
 import NotFound from "./NotFound";
-import Spinner from "../components/Spinner"
-import BackRoutes from "../RoutesInterface"
+import Spinner from "../components/Spinner";
+import BackRoutes from "../RoutesInterface";
+import toast from "react-hot-toast";
+import useFormation from "../controllers/useFormation";
+import useLessons from "../controllers/useLessons";
+import useQuizzs from "../controllers/useQuizzs";
+import useFormationImage from "../controllers/useFormationImage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../firebase";
+import { v4 } from "uuid";
+import Loading from "../components/Loading";
 
-const EditFormation = () => {
+const EditFormation = ({ Existing }) => {
+  const { id } = Existing ? useParams() : { id: "" };
+  
   const user = Cookies.get("token") ? jwtDecode(Cookies.get("token")) : null;
   const Navigate = useNavigate();
-  if (!user) {
-    return <NotFound />;
-  }
-  const Id = user.Id;
+
+  const [Error,setError] = useState(false)
+  const Formation = useFormation(id);
+  const Lessons = useLessons(id);
+  const quizzs = useQuizzs(id);
+
+  // Ids des trucs à delete
+  
+  const LessonsQuizz =
+    Array.isArray(Lessons) && Array.isArray(quizzs)
+      ? [...Lessons, ...quizzs]
+      : null;
+
+  
+  const Id = (user) ? user.Id : null;
 
   let FormationId;
-  let QuizzId;
-  let questionId;
 
-  //loading 
-  
+  //loading
+
   const [loading, setLoading] = useState(false);
-
+  const [init, setInit] = useState(false);
+  const [initTitle,setInitTitle] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [lessons, setLessons] = useState([
@@ -32,6 +53,24 @@ const EditFormation = () => {
       content: "",
     },
   ]);
+
+  useEffect(() => {
+    if (Formation.error) {
+      setError(true)
+    }
+    if (!user){
+      setError(true)
+    }
+    if (!Formation.error && !Formation.loading && !initTitle) {
+      setTitle(Formation.title);
+      setInitTitle(true);
+    }
+    if (Array.isArray(LessonsQuizz) && !init) {
+      setLessons(LessonsQuizz);
+      setInit(true);
+    }
+  }, [LessonsQuizz, Formation]);
+
   const handleLessonTitleChange = (index, value) => {
     const updatedLessons = [...lessons];
     updatedLessons[index].title = value;
@@ -150,129 +189,154 @@ const EditFormation = () => {
     });
     setLessons(updatedLessons);
   };
+  
   const fetchAll = async () => {
-    let result = true;
-    // Ajouter la récupération de l'id du prof + ajouter la formation dans la base de données ici
-
-    // Un Fetch pour ajouter la formation Creation Objet into envoi
-
-    let tmpFormation = {
-      Titre: title,
-      AuthorId: Id,
-      Categorie : category
-    };
-    let res = await fetch(BackRoutes.Formations, {
-      method: "POST",
-      headers: {
+    const method = Existing ? 'PUT' : 'POST';
+    const FormationId  = Existing ? id : ""
+    const Body = Existing ? 
+    {
+      Categorie : category,
+      AuthorId : user.Id,
+      Titre : title,  
+      Lessons: lessons,
+      oldLessons : LessonsQuizz
+    }
+    :
+    {
+      Categorie : category,
+      AuthorId : user.Id,
+      Titre : title,
+      Lessons:lessons 
+    }
+    console.log(Body)
+    let res = await fetch(BackRoutes.Formations+FormationId,{
+      method: method,
+      headers:{
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(tmpFormation),
+      body:JSON.stringify(Body)   
     })
-    res = await res.json();
-    if (res.Statut != 200) result = false;
-    FormationId = res.data.Id;
+    res = await res.json()
+    console.log(res)
+    return res;   
+  }
 
-    if (FormationId) {
-      for (let i = 0; i < lessons.length; i++) {
-        if (!lessons[i].isQuizz) {
-          // On fetch toutes les lessons classiques
-          let tmpLesson = {
-            FormationId: FormationId,
-            Titre: lessons[i].title,
-            Contenu: lessons[i].content,
-          };
-          let resLesson = await fetch(BackRoutes.Lessons, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(tmpLesson),
-          })
-          resLesson = await resLesson.json()
-          if (resLesson.Statut != 200) result = false;
-        } else {
-          // Faire une double boucle pour créer un objet opti
-          let tmpQuizz = {
-            FormationId: FormationId,
-            Titre : lessons[i].title,
-            Description : "DefaultDescription"
-          }
-          let resQuizz = await fetch(BackRoutes.Quizz,{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(tmpQuizz),})
-          resQuizz = await resQuizz.json();
-          if (resQuizz.Statut == 0) result = false;
-          const questions = (result) ? lessons[i].content.questions : [];
+  const [DataImage, setDataImage] = useState();
+  const CurrentImage = useFormationImage(id);
+  const [FormationImage, setFormationImage] = useState(CurrentImage);
+  toast.success("test" + CurrentImage)
+  useEffect(() => {
+    setFormationImage(CurrentImage);
+  }, [CurrentImage]);
 
-          for(let j = 0;j<questions.length;j++){
-            let tmpQuestion ={
-              QuizzId: resQuizz.data.Id,
-              Enonce : questions[j].title
-            }
-            let resQuestion = await fetch(BackRoutes.Qestions,{
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(tmpQuestion)})
-            resQuestion = await resQuestion.json();
-            
-            if (resQuestion.Statut != 200) result = false;
-            let answers = (result) ? questions[j].answers : [];
-            for(let k = 0;k<answers.length;k++){
-              console.log(answers[k])
-              let tmpAnswer = {
-                QuestionId: resQuestion.data.Id,
-                Right : answers[k].isCorrect,
-                Contenu : answers[k].title
-              }
-              let resAnswer = await fetch(BackRoutes.Responses,{
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(tmpAnswer)})
-                resAnswer = await resAnswer.json();
-                if (resAnswer.Statut != 200) result = false;
-            }
-          }
-
+  const handleImage = async () => {
+    setLoading(true);
+    if (!DataImage && FormationImage instanceof String) return;
+    const imageRef = ref(storage, `images/${DataImage.name + v4()}`);
+    uploadBytes(imageRef, DataImage)
+      .then(async () => {
+        const url = await getDownloadURL(imageRef);
+        // Ajouter le fetch
+        let res = await fetch(BackRoutes.Formations + id, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ FormationImage: url }),
+        });
+        res = await res.json();
+        if (res.Statut == 0) {
+          throw new Error("Requete echouée");
         }
-      }
-    }
-    return result;
+        setFormationImage(url);
+      })
+      .then(() => toast.success("Réussi"))
+      .catch((e) => toast.error(e))
+      .finally(() => setLoading(false));
+    setDataImage();
   };
+
+  const loadImageButton = (
+    <>
+      <label
+        htmlFor="input-button"
+        className="flex flex-row border bg-white hover:bg-gray-200 rounded-full px-2 py-2 font-medium cursor-pointer"
+      >
+        <img
+          className="opacity-50"
+          src={"/edit-image-icon.svg"}
+          alt="Edit Image Icon"
+        ></img>
+      </label>
+      <input
+        id="input-button"
+        type="file"
+        name="file"
+        className="hidden"
+        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .svg , .tiff|image/*"
+        onChange={(e) => setDataImage(e.target.files[0])}
+      />
+    </>
+  );
+
+  const confirmImageChangeButton = (
+    <div className="flex flex-row border border-white bg-green-500 text-white rounded-lg px-3 py-1 gap-2 font-medium">
+      <img src={"/check-icon.svg"} alt="Check Icon" className=" invert"></img>
+      <button onClick={handleImage}>Confirmer le changement</button>
+    </div>
+  );
+  
+
+  // Faire la fonction putAll
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setLoading(true);
     fetchAll()
-    .then((res) => {
-      
-      setLoading(false)
-      const result = res
-        ? "Formation bien publiée"
-        : "Publication de la formation echouée";
-      alert(result); 
-    })
-    .finally(() =>{
-      
-      setLoading(false)
-      Navigate(`/u/${Id}`)
-    });
+      .then((res) => {
+        if (res) {
+          toast.success(
+            Existing ? "Formation bien modifiée" : "Formation bien publiée"
+          );
+        } else toast.error( Existing ? "Modification de la formation echouée" :"Publication de la formation echouée");
+      })
+      .finally(() => {  
+        setLoading(false);
+        Navigate(`/u/${Id}`);
+      });
   };
+
+  if (Error){
+    return <NotFound/>
+  }
 
   return (
     <div className="w-full overflow-x-hidden">
       <Header />
-      {
-        loading? <Spinner /> :''
-      }
+      {loading ? <Spinner /> : ""}
       <div className="p-5">
         <div className="text-main-purple text-xl font-bold">
           Créer une formation
+        </div>
+        {/* Formation image */}
+        <div>
+            {loading ? (
+              <div className="w-44 h-44 object-cover rounded-full flex justify-center">
+                <Loading width={70} height={70} />
+              </div>
+            ) : (
+              <div className="relative">
+                <div className="inline-block absolute top-0 right-0">
+                  {!DataImage ? loadImageButton : confirmImageChangeButton}
+                </div>
+                <img
+                  className="w-full h-60 object-cover "
+                  src={FormationImage}
+                  alt="Profile Image"
+                ></img>
+              </div>
+            )}
         </div>
         <div>
           <label className="mb-4 font-semibold" htmlFor="title">
@@ -488,7 +552,7 @@ const EditFormation = () => {
             type="submit"
             onClick={handleSubmit}
           >
-            Publier la formation
+           { Existing ? "Modifier la formation" : "Publier la formation"}
           </button>
         </div>
       </div>
